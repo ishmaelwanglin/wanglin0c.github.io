@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Ceph Hammer版(0.94.10)手动部署for CentOS 7.x | Wang Lin . OPS</title>
+  <meta name="keywords" content=" ceph ">
+  <meta name="description" content="Ceph Hammer版(0.94.10)手动部署for CentOS 7.x | Wang Lin . OPS">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="about me from c lang">
+<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta property="og:site_name" content="Wang Lin . OPS">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-24T09:44:30.787Z">
+<meta property="article:modified_time" content="2020-06-24T09:44:30.786Z">
+<meta property="article:author" content="WangLin">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="false" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>WangLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/wanglin2020c" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="全部文章">全部文章<small>(4)</small></div></li>
+    
+        
+            
+            <li><div data-rel="存储">存储<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="虚拟化">虚拟化<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a class="about  site_url"  href="/about">关于</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="4">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">xxx</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ceph</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>openstack</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>storcli/percli</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>VM</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="全部文章 存储 "
+           href="/2020/06/24/H%E7%89%88%E9%83%A8%E7%BD%B2(0.94.10)/"
+           data-tag="ceph"
+           data-author="" >
+            <span class="post-title" title="Ceph Hammer版(0.94.10)手动部署for CentOS 7.x">Ceph Hammer版(0.94.10)手动部署for CentOS 7.x</span>
+            <span class="post-date" title="2020-06-24 00:00:00">2020/06/24</span>
+        </a>
+        
+        <a  class="全部文章 虚拟化 "
+           href="/2020/06/24/nova%20rescue%20vm_instance%20which%20option%20system%20is%20linux/"
+           data-tag="openstack"
+           data-author="" >
+            <span class="post-title" title="nova rescue vm_instance">nova rescue vm_instance</span>
+            <span class="post-date" title="2020-06-24 00:00:00">2020/06/24</span>
+        </a>
+        
+        <a  class="全部文章 存储 "
+           href="/2020/06/24/%E7%A1%AC%E7%9B%98%E5%AE%9A%E4%BD%8D/"
+           data-tag="storcli/percli"
+           data-author="" >
+            <span class="post-title" title="定位硬盘盘位和盘符的方法">定位硬盘盘位和盘符的方法</span>
+            <span class="post-date" title="2020-06-24 00:00:00">2020/06/24</span>
+        </a>
+        
+        <a  class="全部文章 虚拟化 "
+           href="/1970/01/01/%E8%99%9A%E6%8B%9F%E6%9C%BApv%E6%89%A9%E5%AE%B9/"
+           data-tag="VM"
+           data-author="" >
+            <span class="post-title" title="虚拟机PV扩容">虚拟机PV扩容</span>
+            <span class="post-date" title="1970-01-01 13:36:40">1970/01/01</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-H版部署(0.94.10)" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">Ceph Hammer版(0.94.10)手动部署for CentOS 7.x</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="存储">存储</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">ceph</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2020-06-24 22:44:48'>2020-06-24 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ceph-Hammer版-0-94-10-手动部署for-CentOS-7-x"><span class="toc-text">Ceph Hammer版(0.94.10)手动部署for CentOS 7.x</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Ceph-Hammer版-0-94-10-手动部署for-CentOS-7-x"><a href="#Ceph-Hammer版-0-94-10-手动部署for-CentOS-7-x" class="headerlink" title="Ceph Hammer版(0.94.10)手动部署for CentOS 7.x"></a>Ceph Hammer版(0.94.10)手动部署for CentOS 7.x</h1><p align="right">--lin.wang 20190310</p>
+
+<p>环境有三个节点node-1,node-2,node-3，每个节点三个ssd盘作为osd</p>
+<p>1、添加yum源ceph、base、epel</p>
+<p>2、所有节点添加互信如：root用户，及hosts(/etc/hosts)列表</p>
+<p>3、/etc/ssh/ssh_config中: #   StrictHostKeyChecking ask　注释去掉值改成no</p>
+<p>4、关闭firewalld、selinux，或者开放相应端口: mon 6789、osd 6800-8100</p>
+<p>5、配置时钟同步ntp</p>
+<p>6、每个节点安装ceph包,yum install ceph -y</p>
+<hr>
+<p><em>mon部署,7-10在node-1执行</em></p>
+<p>7、uuidgen生一个uuid,用作fsid</p>
+<p>8、切换到/etc/ceph目录下，创建ceph.conf，编写配置文件，如下</p>
+<pre><code>[global]
+fsid = 4f41a244-032c-4d85-b3ff-7cefb2d1ed16
+mon_initial_members = node-1,node-2,node-3
+mon_host = 192.168.122.94,192.168.122.95,192.168.122.96
+public_network = 192.168.122.0/24
+cluster_network = 192.168.201.0/24
+auth_cluster_required = cephx
+auth_service_required = cephx
+auth_client_required = cephx
+osd_journal_size = 1024
+filestore_xattr_use_omap = true
+osd_pool_default_size = 3 # Write an object n times.
+osd_pool_default_min_size = 1 # Allow writing n copy in a degraded state.
+osd_pool_default_pg_num = 128
+osd_pool_default_pgp_num = 128
+osd_crush_chooseleaf_type = 1</code></pre><p>9、</p>
+<p>创建monitor的key用于多个monitor间通信，保存在<code>/tmp/ceph.mon.keyring</code></p>
+<p><code>ceph-authtool --create-keyring /tmp/ceph.mon.keyring --gen-key -n mon. --cap mon &#39;allow *&#39;</code></p>
+<p>生成管理用户<code>client.admin</code>及其key，保存在<code>/etc/ceph/ceph.client.admin.keyring</code></p>
+<pre><code>ceph-authtool --create-keyring /etc/ceph/ceph.client.admin.keyring --gen-key -n client.admin --set-uid=0 --cap mon &#39;allow *&#39; --cap osd &#39;allow *&#39; --cap mds &#39;allow&#39;
+#key文件命令规则:{cluster name}-{user-name}.keyring</code></pre><p>添加<code>client.admin</code>的key到<code>ceph.mon.keyring</code>文件</p>
+<pre><code>ceph-authtool /tmp/ceph.mon.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring</code></pre><p>10、创建monitor map</p>
+<pre><code>#默认的monitor port是6789
+monmaptool --create --add node-1 192.168.122.94 --add node-2 192.168.122.95 --add node-3 192.168.122.96 --fsid 4f41a244-032c-4d85-b3ff-7cefb2d1ed16 /tmp/monmap</code></pre><p>monmaptool –print /tmp/monmap可以查看生成的monmap</p>
+<p>ceph auth get mon. 可以获取monmap</p>
+<blockquote>
+<p>可以停止mon服务后使用如下方法导出monmap</p>
+<p>ceph-mon -i hostname –extract-monmap /tmp/monmap 从当前节点的/var/lib/ceph/mon/​hostname​ 导出monmap</p>
+<p>注入monmap</p>
+<p>停止所有节点mon服务</p>
+<p>ceph-mon -i mon-id –inject-monmap /tmp/monmap</p>
+<p>启动mon服务</p>
+</blockquote>
+<p>11、在每个mon节点上分别创建mon的目录</p>
+<p><code>sudo mkdir /var/lib/ceph/mon/{cluster-name}-{hostname}</code></p>
+<p>​    node-1&gt; mkdir /var/lib/ceph/mon/ceph-node-1</p>
+<p>​    node-2&gt; mkdir /var/lib/ceph/mon/ceph-node-2</p>
+<p>​    node-3&gt; mkdir /var/lib/ceph/mon/ceph-node-3</p>
+<p>12、初始化monitor</p>
+<p>将node-1的</p>
+<blockquote>
+<p>/tmp/monmoap、/tmp/ceph.mon.keyring、/etc/ceph/ceph.conf、/etc/ceph/ceph.client.admin.keyring</p>
+<p>部署完毕后，/tmp下的这两个文件可以删除</p>
+</blockquote>
+<p>复制到node-2和node-3的对应目录</p>
+<p><code>ceph-mon [--cluster {cluster-name}] --mkfs -i {hostname} --monmap /tmp/monmap --keyring /tmp/ceph.mon.keyring</code></p>
+<p>node-1&gt; ceph-mon –mkfs -i node-1 –monmap /tmp/monmap –keyring /tmp/ceph.mon.keyring</p>
+<p>node-2&gt; ceph-mon –mkfs -i node-2 –monmap /tmp/monmap –keyring /tmp/ceph.mon.keyring</p>
+<p>node-3&gt; ceph-mon –mkfs -i node-3 –monmap /tmp/monmap –keyring /tmp/ceph.mon.keyring</p>
+<p>此时在每个节点/var/lib/ceph/mon/{cluster}-{hostname}目录下生成了store.db和keyring</p>
+<p>13、 在每个节点的mon目录下，创建两个文件：</p>
+<p>/var/lib/ceph/mon/{cluster}-{hostname}/{done,sysvinit}</p>
+<p>​    node-1&gt; touch /var/lib/ceph/mon/ceph-node-1/{done,sysvinit}</p>
+<p>​    node-2&gt; touch /var/lib/ceph/mon/ceph-node-2/{done,sysvinit}</p>
+<p>​    node-3&gt; touch /var/lib/ceph/mon/ceph-node-3/{done,sysvinit}</p>
+<blockquote>
+<p>其中done文件表示monitor已经创建完成，可以启动使用了。</p>
+<p>缺少sysvinit会报错。</p>
+<p>老版本要求创建upstart已自动启动，当前版本创建后会起不来。</p>
+</blockquote>
+<p>14、启动monitor服务: 每个mon节点，/etc/init.d/ceph start mon</p>
+<p>15、开机自启动，chkconfig ceph on</p>
+<hr>
+<p>osd部署</p>
+<p>16、创建osd id<code>ceph osd create</code></p>
+<p>本次有９个osd，因此创建9个即0-8: <code>for i in $(seq 0 8) ;do ceph osd create;done</code></p>
+<blockquote>
+<p>新版本支持指定osd id，当前版本不支持</p>
+<p>创建完成后，可以通过ceph osd tree看到所有osd处于down和没有crush weight的状态</p>
+<p>[root@ceph-1 ~]# ceph osd tree<br>ID WEIGHT TYPE NAME    UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1      0 root default<br> 0      0 osd.0           down        0          1.00000<br> 1      0 osd.1           down        0          1.00000<br> 2      0 osd.2           down        0          1.00000<br> 3      0 osd.3           down        0          1.00000<br> 4      0 osd.4           down        0          1.00000<br> 5      0 osd.5           down        0          1.00000<br> 6      0 osd.6           down        0          1.00000<br> 7      0 osd.7           down        0          1.00000<br> 8      0 osd.8           down        0          1.00000</p>
+</blockquote>
+<p>17、在每个节点创建osd的目录,<code>mkdir /var/lib/ceph/osd/{cluster-name}-{osd-number}</code></p>
+<p>​    node-1&gt; mkdir /var/lib/ceph/osd/ceph-{0..2}</p>
+<p>​    node-2&gt; mkdir /var/lib/ceph/osd/ceph-{3..5}</p>
+<p>​    node-3&gt; mkdir /var/lib/ceph/osd/ceph-{6..8}</p>
+<p>18、将所有osd磁盘分区并挂载</p>
+<p><code>parted -s /dev/vdb mklabel gpt mkpart primary 2048s 100%</code></p>
+<p><code>mkfs.xfs /dev/vdb1</code></p>
+<pre><code>[root@ceph-1 osd]# df -h
+Filesystem               Size  Used Avail Use% Mounted on
+/dev/mapper/centos-root  7.1G  1.2G  6.0G  16% /
+devtmpfs                 2.0G     0  2.0G   0% /dev
+tmpfs                    2.0G     0  2.0G   0% /dev/shm
+tmpfs                    2.0G  8.5M  2.0G   1% /run
+tmpfs                    2.0G     0  2.0G   0% /sys/fs/cgroup
+/dev/vda1               1014M  125M  890M  13% /boot
+tmpfs                    396M     0  396M   0% /run/user/0
+/dev/vdb1                 10G   33M   10G   1% /var/lib/ceph/osd/ceph-0
+/dev/vdc1                 10G   33M   10G   1% /var/lib/ceph/osd/ceph-1
+/dev/vdd1                 10G   33M   10G   1% /var/lib/ceph/osd/ceph-2</code></pre><p>19、各osd节点初始化osd目录</p>
+<p><code>ceph-osd -i {osd-num} --mkfs --mkkey --osd-uuid [{uuid}]</code></p>
+<p>ceph-osd -i 0 –mkfs –mkkey </p>
+<blockquote>
+<p>加 <code>--mkkey</code> 选项运行 <code>ceph-osd</code> 之前，此目录必须是空的；另外，如果集群名字不是默认值，还要给 <code>ceph-osd</code> 指定 <code>--cluster</code> 选项。</p>
+</blockquote>
+<p>20、注册osd的keyring.</p>
+<p><code>ceph auth add osd.{osd-num} osd &#39;allow *&#39; mon &#39;allow profile osd&#39; -i /var/lib/ceph/osd/{cluster-name}-{osd-num}/keyring</code></p>
+<p>ceph auth add osd.0 osd ‘allow *’ mon ‘allow profile osd’ -i /var/lib/ceph/osd/ceph-0/keyring</p>
+<blockquote>
+<p>路径内 <code>ceph-{osd-num}</code> 里的 <code>ceph</code> 其含义为 <code>$cluster-$id</code> ，如果你的集群名字不是 <code>ceph</code> ，请指定自己的集群名</p>
+<p>对于恢复已有的keyring,可以使用ceph auth import -i osd_path/keyring并auth caps赋权:ceph auth caps osd.0 osd ‘allow *’ mon ‘allow profile osd’</p>
+</blockquote>
+<p>21、将节点加入到crush map，并放置在default根root下。</p>
+<p><code>ceph [--cluster {cluster-name}] osd crush add-bucket {hostname} host</code></p>
+<p>ceph osd crush add-bucket node-1 host </p>
+<p>ceph osd crush move node-1 root=default</p>
+<blockquote>
+<p>move到root下前后crush 对比</p>
+<p>之前</p>
+<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT TYPE NAME    UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-2      0 host node-1<br>-1      0 root default                                   </p>
+<p>之后</p>
+<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1      0 root default<br>-2      0     host node-1   </p>
+<p>crush中没有删除bucket的命令，只能导出crushmap修改</p>
+<p>先mkkey才能mova osd 到bucket下，否则mkkey会报错</p>
+</blockquote>
+<p>22、在crushmap把osd添加到host下：</p>
+<p><code>ceph [--cluster {cluster-name}] osd crush add {id-or-name} {weight} [{bucket-type}={bucket-name} ...]</code></p>
+<p>ceph osd crush add osd.0 1.0 host=node-1</p>
+<blockquote>
+<p>添加后，则osd属于host下，启动服务即可接收数据。加入之前和之后对比：</p>
+<p>之前</p>
+<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1      0 root default<br>-2      0     host node-1<br> 0      0 osd.0              down        0          1.00000<br> 1      0 osd.1              down        0          1.00000<br> 2      0 osd.2              down        0          1.00000 </p>
+<p>之后</p>
+<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT  TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1 3.00000 root default<br>-2 3.00000     host node-1<br> 0 1.00000         osd.0      down        0          1.00000<br> 1 1.00000         osd.1      down        0          1.00000<br> 2 1.00000         osd.2      down        0          1.00000 </p>
+</blockquote>
+<p>23、给osd创建sysvinit并启动osd服务</p>
+<p>创建sysvinit,在osd的目录下 <code>touch /var/lib/ceph/osd/{cluster-name}-{osd-num}/sysvinit</code></p>
+<p>touch /var/lib/ceph/osd/ceph-0/sysvinit</p>
+<p>24、添加journal</p>
+<blockquote>
+<pre><code>#清除磁盘所有分区(重新添加时需要)
+#sgdisk --zap-all --clear --mbrtogpt /dev/vdf</code></pre></blockquote>
+<p>Journal大小的选择尊循下面的规则：</p>
+<blockquote>
+<p>osd journal size = {2 * (expected throughput * filestore_max_sync_interval)}</p>
+<p>filestore_max_sync_interval为ceph配置，可以在ceph的config中获取，默认为5s</p>
+</blockquote>
+<p>即osd journal的大小应该设置为(磁盘的带宽 * 同步时间) 的2倍。</p>
+<p>25、给osd和journal打标签<br>数据盘标签<br>sgdisk –typecode=1:4fbd7e29-9d25-41b8-afd0-062c0ceff05d /dev/sdx<br>日志盘标签<br>sgdisk –typecode=1:45b0969e-9b03-4f30-b4c6-b4b80ceff106 /dev/sdx<br>注:对所有日志盘和数据盘执行此操作,日志盘分区与数据盘不同 typecode = 1 代表<br>第一个分区<br>Other TAG<br>sgdisk –typecode=1:4fbd7e29-9d25-41b8-afd0-062c0ceff0f9 – /dev/sdx</p>
+<p>删除旧的journal，把ssd分区的uuid链接到osd目录为journal，并把uuid写入journal_uuid文件</p>
+<p>并执行</p>
+<p>ceph-osd -i osd_numer –mkjournal</p>
+<p>26、在osd所在节点启动osd的服务，将osd状态变为up</p>
+<p><code>service ceph start osd</code></p>
+<p>osd服务启动后，会自动up和in到集群。</p>
+<p>依次把所有osd节点的osd完成部署和启动则集群部署完成</p>
+<blockquote>
+<p>osd的服务部署有精简方法：</p>
+<ol>
+<li><p>准备：　<code>ceph-disk prepare --cluster {cluster-name} --cluster-uuid {uuid} --fs-type {ext4|xfs|btrfs} {data-path} [{journal-path}]</code></p>
+</li>
+<li><p>激活：　<code>ceph-disk activate {data-path} [--activate-key {path}]</code></p>
+</li>
+</ol>
+<p>注： 如果你的 Ceph 节点上没有 <code>/var/lib/ceph/bootstrap-osd/{cluster}.keyring</code> ，那么应该外加 <code>--activate-key</code>参数。</p>
+<p>osd的自动启动是udev的规则控制，所以需要给osd用sgdisk打上标签</p>
+<p>规则</p>
+<p>/usr/lib/udev/rules.d/95-ceph-osd.rules</p>
+<p>/usr/lib/udev/rules.d/60-ceph-by-parttypeuuid.rules</p>
+</blockquote>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2020
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().trim().split('\n').length, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

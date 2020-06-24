@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>定位硬盘盘位和盘符的方法 | Wang Lin . OPS</title>
+  <meta name="keywords" content=" storcli/percli ">
+  <meta name="description" content="定位硬盘盘位和盘符的方法 | Wang Lin . OPS">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="about me from c lang">
+<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta property="og:site_name" content="Wang Lin . OPS">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-24T09:44:30.787Z">
+<meta property="article:modified_time" content="2020-06-24T09:44:30.786Z">
+<meta property="article:author" content="WangLin">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="false" />
+</div>
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>WangLin</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/wanglin2020c" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active" data-rel="全部文章">全部文章<small>(4)</small></div></li>
+    
+        
+            
+            <li><div data-rel="存储">存储<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="虚拟化">虚拟化<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a class="about  site_url"  href="/about">关于</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="4">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">xxx</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索"></i>
+            <div class="right-title">全部文章</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" />
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>ceph</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>openstack</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>storcli/percli</a>
+            </li>
+        
+            <li class="article-tag-list-item">
+                <i class="iconfont icon-tag"></i><a>VM</a>
+            </li>
+        
+    </div>
+
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="全部文章 存储 "
+           href="/2020/06/24/H%E7%89%88%E9%83%A8%E7%BD%B2(0.94.10)/"
+           data-tag="ceph"
+           data-author="" >
+            <span class="post-title" title="Ceph Hammer版(0.94.10)手动部署for CentOS 7.x">Ceph Hammer版(0.94.10)手动部署for CentOS 7.x</span>
+            <span class="post-date" title="2020-06-24 00:00:00">2020/06/24</span>
+        </a>
+        
+        <a  class="全部文章 虚拟化 "
+           href="/2020/06/24/nova%20rescue%20vm_instance%20which%20option%20system%20is%20linux/"
+           data-tag="openstack"
+           data-author="" >
+            <span class="post-title" title="nova rescue vm_instance">nova rescue vm_instance</span>
+            <span class="post-date" title="2020-06-24 00:00:00">2020/06/24</span>
+        </a>
+        
+        <a  class="全部文章 存储 "
+           href="/2020/06/24/%E7%A1%AC%E7%9B%98%E5%AE%9A%E4%BD%8D/"
+           data-tag="storcli/percli"
+           data-author="" >
+            <span class="post-title" title="定位硬盘盘位和盘符的方法">定位硬盘盘位和盘符的方法</span>
+            <span class="post-date" title="2020-06-24 00:00:00">2020/06/24</span>
+        </a>
+        
+        <a  class="全部文章 虚拟化 "
+           href="/1970/01/01/%E8%99%9A%E6%8B%9F%E6%9C%BApv%E6%89%A9%E5%AE%B9/"
+           data-tag="VM"
+           data-author="" >
+            <span class="post-title" title="虚拟机PV扩容">虚拟机PV扩容</span>
+            <span class="post-date" title="1970-01-01 13:36:40">1970/01/01</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-硬盘定位" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">定位硬盘盘位和盘符的方法</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="存储">存储</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">storcli/percli</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2020-06-24 22:43:47'>2020-06-24 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Section-One-Introduction"><span class="toc-text">Section One : Introduction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Section-Two-Install-package"><span class="toc-text">Section Two : Install package</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Section-Three-Step"><span class="toc-text">Section Three : Step</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Section-Four-storcli-perccli-Usage"><span class="toc-text">Section Four : storcli&#x2F;perccli Usage</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#查看控制器的信息"><span class="toc-text">查看控制器的信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#看磁盘的Device-id、Slot-No-以及DriveGroup"><span class="toc-text">看磁盘的Device id、Slot No. 以及DriveGroup</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看指定硬盘的信息"><span class="toc-text">查看指定硬盘的信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看磁盘与系统磁盘分区的对应"><span class="toc-text">查看磁盘与系统磁盘分区的对应</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Raid卡日志收集相关命令"><span class="toc-text">Raid卡日志收集相关命令</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Section-Five-Smartctl-Get-Error-info-of-Disks"><span class="toc-text">Section Five : Smartctl Get Error info of Disks</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Common-Commands-Usage-Description"><span class="toc-text">Common Commands Usage Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Get-info-for-dev-sdf"><span class="toc-text">Get info for &#x2F;dev&#x2F;sdf</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#查看所有设备列表"><span class="toc-text">查看所有设备列表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看磁盘信息"><span class="toc-text">查看磁盘信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看磁盘的属性信息"><span class="toc-text">查看磁盘的属性信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看磁盘的健康检测状态"><span class="toc-text">查看磁盘的健康检测状态</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看磁盘的错误日志"><span class="toc-text">查看磁盘的错误日志</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#补充"><span class="toc-text">补充</span></a></li></ol></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <center><font size="8">定位硬盘盘位和盘符的方法</font></center>
+
+<p align="right"><font size="4">From WangLin of ES.OPS</font></p>
+
+
+
+<p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Section-One-Introduction"><span class="toc-text">Section One : Introduction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Section-Two-Install-package"><span class="toc-text">Section Two : Install package</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Section-Three-Step"><span class="toc-text">Section Three : Step</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Section-Four-storcli-perccli-Usage"><span class="toc-text">Section Four : storcli&#x2F;perccli Usage</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#查看控制器的信息"><span class="toc-text">查看控制器的信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#看磁盘的Device-id、Slot-No-以及DriveGroup"><span class="toc-text">看磁盘的Device id、Slot No. 以及DriveGroup</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看指定硬盘的信息"><span class="toc-text">查看指定硬盘的信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看磁盘与系统磁盘分区的对应"><span class="toc-text">查看磁盘与系统磁盘分区的对应</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Raid卡日志收集相关命令"><span class="toc-text">Raid卡日志收集相关命令</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Section-Five-Smartctl-Get-Error-info-of-Disks"><span class="toc-text">Section Five : Smartctl Get Error info of Disks</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Common-Commands-Usage-Description"><span class="toc-text">Common Commands Usage Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Get-info-for-dev-sdf"><span class="toc-text">Get info for &#x2F;dev&#x2F;sdf</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#查看所有设备列表"><span class="toc-text">查看所有设备列表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看磁盘信息"><span class="toc-text">查看磁盘信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看磁盘的属性信息"><span class="toc-text">查看磁盘的属性信息</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看磁盘的健康检测状态"><span class="toc-text">查看磁盘的健康检测状态</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#查看磁盘的错误日志"><span class="toc-text">查看磁盘的错误日志</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#补充"><span class="toc-text">补充</span></a></li></ol></li></ol></li></ol></div></p>
+<h3 id="Section-One-Introduction"><a href="#Section-One-Introduction" class="headerlink" title="Section One : Introduction"></a>Section One : Introduction</h3><blockquote>
+<p>strocli是megacli的升级版本，针对于戴尔服务器是perccli，用法完全一致</p>
+<p>smartctl可以查看磁盘的主控芯片smart信息</p>
+<p>lsscsi可以查看系统的scsi信息，数据来源/proc/scsi/scsi相关，该文档此处暂不介绍</p>
+<p>这些工具都是查看磁盘相关信息的常用工具，对于排查磁盘状态和raid卡问题都有帮助</p>
+</blockquote>
+<h3 id="Section-Two-Install-package"><a href="#Section-Two-Install-package" class="headerlink" title="Section Two : Install package"></a>Section Two : Install package</h3><blockquote>
+<p>安装一下storcli或者perccli，并且将命令软连接到/usr/bin/目录下，方便使用命令：</p>
+<p>ln -s /opt/MegaRAID/storcli/storcli64 /usr/bin/</p>
+<p>ln -s /opt/MegaRAID/perccli/percclie64 /usr/bin/</p>
+</blockquote>
+<h3 id="Section-Three-Step"><a href="#Section-Three-Step" class="headerlink" title="Section Three : Step"></a>Section Three : Step</h3><blockquote>
+<p><strong>由系统磁盘盘符/dev/sdf定位对应的硬盘盘位思路如下：</strong></p>
+<ol>
+<li><p>perccli64 /c0/eall/sall show 看到该磁盘有</p>
+<img src=/home/wanglin/.config/Typora/typora-user-images/1547173120342.png style="zoom:70%" align="middle"/>
+
+<center>img-/c0/eall/sall   </center>
+
+<p>从该图看到有四个jbod分区，根据经验一般人为jbod的分区系统盘符会在raid分区之前，也就是说jbod的分区会从/dev/sda &gt; /dev/sdd，raid的分区从/dev/sde开始；</p>
+<p>DG代表drive group，是配置raid建分组的顺序，有图上看到32:4和32:5是一个卷组。</p>
+</li>
+<li><p>perccli64 /c0/vall show看到该磁盘的DG与VD的对应关系如下</p>
+<img src=/home/wanglin/.config/Typora/typora-user-images/1547173670130.png  style="zoom:7%/" align="middle">
+
+</li>
+</ol>
+<center>img-/c0/vall</center>
+
+<p>​    由图上看到DG/VD就是raid的卷组和系统里卷组的顺序对应关系，一般如果服务器只有raid卷组来说的话，VD0就是操作系统里的/dev/sda，以此类推；但是如果服务器包括了jbod卷组，则raid的卷组从jbod后开始排序，本例中也就是VD0＝/dev/sde，则要定位/dev/sdf的话VD＝１，对应DG＝１；</p>
+<p>​    回到img-/c0/eall/sall上，DG为1时，DID=6，DID就是device id，这个概念后边有用；同时Slot NO.也就是slt = 6对应的服务器上盘位就是第７个（从0开始到6），此时即定位到了/dev/sdf的物理盘位。</p>
+<p><strong>反之从服务器上看到硬盘故障灯，可以反推对应的系统分区盘符</strong></p>
+<blockquote>
+<p>Note:</p>
+<p>​    如果服务器没有jbod卷组，全是raid的，则此时/c0/vall找到对应关系即可定位关联关系</p>
+<p>​    实际操作时还可以通过 perccli64 /c0/e32/s6 start/stop locate点亮关闭磁盘灯，来判断定位是否正确</p>
+</blockquote>
+</blockquote>
+<h3 id="Section-Four-storcli-perccli-Usage"><a href="#Section-Four-storcli-perccli-Usage" class="headerlink" title="Section Four : storcli/perccli Usage"></a>Section Four : storcli/perccli Usage</h3><h5 id="查看控制器的信息"><a href="#查看控制器的信息" class="headerlink" title="查看控制器的信息"></a>查看控制器的信息</h5><p>*<em><code>perccli64 show ctrlcount    查看有几个控制器即几个raid卡</code> *</em></p>
+<p><strong><code>perccli64 show    显示raid卡信息</code></strong></p>
+<pre><code class="bash">[root@node-15 ~]# perccli64 show
+Status Code = 0
+Status = Success
+Description = None
+
+Number of Controllers = 1
+Host Name = node-15.domain.tld
+Operating System  = Linux3.10.0-327.20.1.es2.el7.x86_64
+
+System Overview :
+===============
+
+------------------------------------------------------------------------
+Ctl Model        Ports PDs DGs DNOpt VDs VNOpt BBU sPR DS EHS ASOs Hlth 
+------------------------------------------------------------------------
+  0 PERCH730Mini     8  16  11     0  11     0 Opt On  3  N      0 Opt  
+------------------------------------------------------------------------
+
+Ctl=Controller Index|DGs=Drive groups|VDs=Virtual drives|Fld=Failed
+PDs=Physical drives|DNOpt=DG NotOptimal|VNOpt=VD NotOptimal|Opt=Optimal
+Msng=Missing|Dgd=Degraded|NdAtn=Need Attention|Unkwn=Unknown
+sPR=Scheduled Patrol Read|DS=DimmerSwitch|EHS=Emergency Hot Spare
+Y=Yes|N=No|ASOs=Advanced Software Options|BBU=Battery backup unit
+Hlth=Health|Safe=Safe-mode boot</code></pre>
+<p>可以看到只有一个raid卡，ctrl 0也是就是/c0</p>
+<p><strong><code>storcli64 /c0 show</code></strong></p>
+<pre><code class="bash">[root@node-15 ~]# perccli64 /c0 show
+Generating detailed summary of the adapter, it may take a while to complete.
+
+Controller = 0
+Status = Success
+Description = None
+
+Product Name = PERC H730 Mini
+Serial Number = 663021Z
+SAS Address =  51866da066153000
+PCI Address = 00:03:00:00
+System Time = 01/10/2019 20:48:38
+Mfg. Date = 06/17/16
+Controller Time = 01/10/2019 12:44:21
+FW Package Build = 25.4.0.0017
+BIOS Version = 6.29.00.0_4.16.07.00_0x06120100
+FW Version = 4.260.00-6259
+Driver Name = megaraid_sas
+Driver Version = 06.807.10.00-rh1
+Current Personality = RAID-Mode
+Vendor Id = 0x1000
+Device Id = 0x5D
+SubVendor Id = 0x1028
+SubDevice Id = 0x1F49
+Host Interface = PCI-E
+Device Interface = SAS-12G
+Bus Number = 3
+Device Number = 0
+Function Number = 0
+Drive Groups = 11
+
+TOPOLOGY :
+========
+
+---------------------------------------------------------------------------
+DG Arr Row EID:Slot DID Type  State BT     Size PDC  PI SED DS3  FSpace TR 
+---------------------------------------------------------------------------
+ 0 -   -   -        -   RAID1 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 0 0   -   -        -   RAID1 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 0 0   0   32:4     4   DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+ 0 0   1   32:5     5   DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+ 1 -   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 1 0   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 1 0   0   32:6     6   DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+ 2 -   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 2 0   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 2 0   0   32:7     7   DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+ 3 -   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 3 0   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 3 0   0   32:8     8   DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+ 4 -   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 4 0   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 4 0   0   32:9     9   DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+ 5 -   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 5 0   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 5 0   0   32:10    10  DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+ 6 -   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 6 0   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 6 0   0   32:11    11  DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+ 7 -   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 7 0   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 7 0   0   32:12    12  DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+ 8 -   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 8 0   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 8 0   0   32:13    13  DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+ 9 -   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 9 0   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+ 9 0   0   32:14    14  DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+10 -   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+10 0   -   -        -   RAID0 Optl  N  931.0 GB dflt N  N   dflt N      N  
+10 0   0   32:15    15  DRIVE Onln  N  931.0 GB dflt N  N   dflt -      N  
+---------------------------------------------------------------------------
+
+DG=Disk Group Index|Arr=Array Index|Row=Row Index|EID=Enclosure Device ID
+DID=Device ID|Type=Drive Type|Onln=Online|Rbld=Rebuild|Dgrd=Degraded
+Pdgd=Partially degraded|Offln=Offline|BT=Background Task Active
+PDC=PD Cache|PI=Protection Info|SED=Self Encrypting Drive|Frgn=Foreign
+DS3=Dimmer Switch 3|dflt=Default|Msng=Missing|FSpace=Free Space Present
+TR=Transport Ready
+
+Virtual Drives = 11
+
+VD LIST :
+=======
+
+-------------------------------------------------------------
+DG/VD TYPE  State Access Consist Cache Cac sCC     Size Name 
+-------------------------------------------------------------
+0/0   RAID1 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+1/1   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+2/2   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+3/3   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+4/4   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+5/5   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+6/6   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+7/7   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+8/8   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+9/9   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+10/10 RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+-------------------------------------------------------------
+
+Cac=CacheCade|Rec=Recovery|OfLn=OffLine|Pdgd=Partially Degraded|Dgrd=Degraded
+Optl=Optimal|RO=Read Only|RW=Read Write|HD=Hidden|TRANS=TransportReady|B=Blocked|
+Consist=Consistent|R=Read Ahead Always|NR=No Read Ahead|WB=WriteBack|
+FWB=Force WriteBack|WT=WriteThrough|C=Cached IO|D=Direct IO|sCC=Scheduled
+Check Consistency
+
+Physical Drives = 16
+
+PD LIST :
+=======
+
+----------------------------------------------------------------------------
+EID:Slt DID State DG      Size Intf Med SED PI SeSz Model                Sp 
+----------------------------------------------------------------------------
+32:0      0 JBOD  -  185.75 GB SATA SSD N   N  512B INTEL SSDSC2BX200G4R U  
+32:1      1 JBOD  -  185.75 GB SATA SSD N   N  512B INTEL SSDSC2BX200G4R U  
+32:2      2 JBOD  -  185.75 GB SATA SSD N   N  512B INTEL SSDSC2BX200G4R U  
+32:3      3 JBOD  -  185.75 GB SATA SSD N   N  512B INTEL SSDSC2BX200G4R U  
+32:4      4 Onln  0   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:5      5 Onln  0   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:6      6 Onln  1   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:7      7 Onln  2   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:8      8 Onln  3   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:9      9 Onln  4   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:10    10 Onln  5   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:11    11 Onln  6   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:12    12 Onln  7   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:13    13 Onln  8   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:14    14 Onln  9   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:15    15 Onln  10  931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+----------------------------------------------------------------------------
+
+EID-Enclosure Device ID|Slt-Slot No.|DID-Device ID|DG-DriveGroup
+DHS-Dedicated Hot Spare|UGood-Unconfigured Good|GHS-Global Hotspare
+UBad-Unconfigured Bad|Onln-Online|Offln-Offline|Intf-Interface
+Med-Media Type|SED-Self Encryptive Drive|PI-Protection Info
+SeSz-Sector Size|Sp-Spun|U-Up|D-Down/PowerSave|T-Transition|F-Foreign
+UGUnsp-Unsupported|UGShld-UnConfigured shielded|HSPShld-Hotspare shielded
+CFShld-Configured shielded|Cpybck-CopyBack|CBShld-Copyback Shielded
+
+
+BBU_Info :
+========
+
+----------------------------------------------
+Model State   RetentionTime Temp Mode MfgDate 
+----------------------------------------------
+BBU   Optimal 0 hour(s)     38C  -    0/00/00 
+----------------------------------------------</code></pre>
+<h5 id="看磁盘的Device-id、Slot-No-以及DriveGroup"><a href="#看磁盘的Device-id、Slot-No-以及DriveGroup" class="headerlink" title="看磁盘的Device id、Slot No. 以及DriveGroup"></a>看磁盘的Device id、Slot No. 以及DriveGroup</h5><pre><code class="bash">[root@node-15 ~]# perccli64 /c0/eall/sall show
+Controller = 0
+Status = Success
+Description = Show Drive Information Succeeded.
+
+
+Drive Information :
+=================
+
+----------------------------------------------------------------------------
+EID:Slt DID State DG      Size Intf Med SED PI SeSz Model                Sp 
+----------------------------------------------------------------------------
+32:0      0 JBOD  -  185.75 GB SATA SSD N   N  512B INTEL SSDSC2BX200G4R U  
+32:1      1 JBOD  -  185.75 GB SATA SSD N   N  512B INTEL SSDSC2BX200G4R U  
+32:2      2 JBOD  -  185.75 GB SATA SSD N   N  512B INTEL SSDSC2BX200G4R U  
+32:3      3 JBOD  -  185.75 GB SATA SSD N   N  512B INTEL SSDSC2BX200G4R U  
+32:4      4 Onln  0   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:5      5 Onln  0   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:6      6 Onln  1   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:7      7 Onln  2   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:8      8 Onln  3   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:9      9 Onln  4   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:10    10 Onln  5   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:11    11 Onln  6   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:12    12 Onln  7   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:13    13 Onln  8   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:14    14 Onln  9   931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+32:15    15 Onln  10  931.0 GB SATA HDD N   N  512B ST91000640NS         U  
+----------------------------------------------------------------------------
+
+EID-Enclosure Device ID|Slt-Slot No.|DID-Device ID|DG-DriveGroup
+DHS-Dedicated Hot Spare|UGood-Unconfigured Good|GHS-Global Hotspare
+UBad-Unconfigured Bad|Onln-Online|Offln-Offline|Intf-Interface
+Med-Media Type|SED-Self Encryptive Drive|PI-Protection Info
+SeSz-Sector Size|Sp-Spun|U-Up|D-Down/PowerSave|T-Transition|F-Foreign
+UGUnsp-Unsupported|UGShld-UnConfigured shielded|HSPShld-Hotspare shielded
+CFShld-Configured shielded|Cpybck-CopyBack|CBShld-Copyback Shielded</code></pre>
+<blockquote>
+<p>Note: </p>
+<p>​    根据经验，在centos系统里的默认udev规则下,jbod的分区在raid的分区之前(如果在线修改的,重启后会变成jbod在前),通过lsscsi命令可以发现在同一个raid控制器下,jbod的分区的channel值小于raid分区的值,类似下图, 第一个字段的第二个值0是jbod和2是raid的区别.</p>
+<pre><code>[root@SZVPN-2 udev]# lsscsi
+[0:0:24:0]   disk    IBM-ESXS MBF2600RC        SB2C  /dev/sda 
+[0:2:0:0]    disk    IBM      ServeRAID M5110e 3.19  /dev/sdb 
+[0:2:1:0]    disk    IBM      ServeRAID M5110e 3.19  /dev/sdc </code></pre><p>并且jbod设备的分区在系统里被udev规则识别得到的scsi_level高于raid分区.</p>
+<p>udevadm info -ap /sys/class/block/sdx |grep scsi_level</p>
+<p>或者udevadm info -ap $(udevadm info -q path -n /dev/sdx)|grep scsi_level</p>
+<p>我的测试值jbod的scsi_level是7而raid的scsi_level是6.</p>
+<p>相应的udev规则是  <code>/lib/udev/rules.d/60-persistent-storage.rules</code> </p>
+<p>scsci_level: ATTRS{scsi_level}==”[6-9]*”</p>
+</blockquote>
+<h5 id="查看指定硬盘的信息"><a href="#查看指定硬盘的信息" class="headerlink" title="查看指定硬盘的信息"></a>查看指定硬盘的信息</h5><pre><code class="bash">[root@node-15 ~]# perccli64 /c0/e32/s6 show all
+Controller = 0
+Status = Success
+Description = Show Drive Information Succeeded.
+
+
+Drive /c0/e32/s6 :
+================
+
+-------------------------------------------------------------------
+EID:Slt DID State DG     Size Intf Med SED PI SeSz Model        Sp 
+-------------------------------------------------------------------
+32:6      6 Onln   1 931.0 GB SATA HDD N   N  512B ST91000640NS U  
+-------------------------------------------------------------------
+
+EID-Enclosure Device ID|Slt-Slot No.|DID-Device ID|DG-DriveGroup
+DHS-Dedicated Hot Spare|UGood-Unconfigured Good|GHS-Global Hotspare
+UBad-Unconfigured Bad|Onln-Online|Offln-Offline|Intf-Interface
+Med-Media Type|SED-Self Encryptive Drive|PI-Protection Info
+SeSz-Sector Size|Sp-Spun|U-Up|D-Down/PowerSave|T-Transition|F-Foreign
+UGUnsp-Unsupported|UGShld-UnConfigured shielded|HSPShld-Hotspare shielded
+CFShld-Configured shielded|Cpybck-CopyBack|CBShld-Copyback Shielded
+
+
+Drive /c0/e32/s6 - Detailed Information :
+=======================================
+
+Drive /c0/e32/s6 State :
+======================
+Shield Counter = 0
+Media Error Count = 46431                *** 很明显的问题发生了46431次介质错误 ***
+Other Error Count = 0
+Drive Temperature =  31C (87.80 F)    
+Predictive Failure Count = 126            *** 预测故障次数126次 ***
+S.M.A.R.T alert flagged by drive = Yes
+
+
+Drive /c0/e32/s6 Device attributes :
+==================================
+SN = 9XGA228L
+Manufacturer Id = ATA     
+Model Number = ST91000640NS
+NAND Vendor = NA
+WWN = 5000c500918f2f8a
+Firmware Revision =     AA63
+Raw size = 931.512 GB [0x74706db0 Sectors]
+Coerced size = 931.0 GB [0x74600000 Sectors]
+Non Coerced size = 931.012 GB [0x74606db0 Sectors]
+Device Speed = 6.0Gb/s
+Link Speed = 12.0Gb/s
+NCQ setting = N/A
+Write Cache = Enabled
+Logical Sector Size = 512B
+Physical Sector Size = 512B
+Connector Name = 00 
+
+
+Drive /c0/e32/s6 Policies/Settings :
+==================================
+Drive position = DriveGroup:1, Span:0, Row:0
+Enclosure position = 0
+Connected Port Number = 0(path0) 
+Sequence Number = 2
+Commissioned Spare = No
+Emergency Spare = No
+Last Predictive Failure Event Sequence Number = 95183    *** 上一次预测错误的序号95183 ***
+Successful diagnostics completion on = N/A
+SED Capable = No
+SED Enabled = No
+Secured = No
+Cryptographic Erase Capable = No
+Locked = No
+Needs EKM Attention = No
+PI Eligible = No
+Certified = Yes
+Wide Port Capable = No
+
+Port Information :
+================
+
+-----------------------------------------
+Port Status Linkspeed SAS address        
+-----------------------------------------
+   0 Active 12.0Gb/s  0x500056b33fefe586 
+-----------------------------------------
+
+
+Inquiry Data = 
+5a 0c ff 3f 37 c8 10 00 00 00 00 00 3f 00 00 00 
+00 00 00 00 20 20 20 20 20 20 20 20 20 20 20 20 
+58 39 41 47 32 32 4c 38 00 00 00 00 04 00 20 20 
+20 20 41 41 33 36 54 53 31 39 30 30 36 30 30 34 
+53 4e 20 20 20 20 20 20 20 20 20 20 20 20 20 20 
+20 20 20 20 20 20 20 20 20 20 20 20 20 20 10 80 
+00 40 00 2f 00 40 00 02 00 02 07 00 ff 3f 10 00 
+3f 00 10 fc fb 00 10 00 ff ff ff 0f 00 00 07 00 </code></pre>
+<blockquote>
+<p>Note: </p>
+<p> 通过单个卷组的信息查看，发现了media error，说明了硬盘是有问题的</p>
+</blockquote>
+<h5 id="查看磁盘与系统磁盘分区的对应"><a href="#查看磁盘与系统磁盘分区的对应" class="headerlink" title="查看磁盘与系统磁盘分区的对应"></a>查看磁盘与系统磁盘分区的对应</h5><pre><code class="bash">[root@node-15 ~]# perccli64 /c0/vall show
+Controller = 0
+Status = Success
+Description = None
+
+
+Virtual Drives :
+==============
+
+-------------------------------------------------------------
+DG/VD TYPE  State Access Consist Cache Cac sCC     Size Name 
+-------------------------------------------------------------
+0/0   RAID1 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+1/1   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+2/2   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+3/3   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+4/4   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+5/5   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+6/6   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+7/7   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+8/8   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+9/9   RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+10/10 RAID0 Optl  RW     Yes     RWBD  -   OFF 931.0 GB      
+-------------------------------------------------------------
+
+Cac=CacheCade|Rec=Recovery|OfLn=OffLine|Pdgd=Partially Degraded|Dgrd=Degraded
+Optl=Optimal|RO=Read Only|RW=Read Write|HD=Hidden|TRANS=TransportReady|B=Blocked|
+Consist=Consistent|R=Read Ahead Always|NR=No Read Ahead|WB=WriteBack|
+FWB=Force WriteBack|WT=WriteThrough|C=Cached IO|D=Direct IO|sCC=Scheduled
+Check Consistency</code></pre>
+<blockquote>
+<p>Note:</p>
+<p>VD：一般认为是该硬盘在系统里的设备顺序，一般如果只有raid分区，那么VD=0的就是系统里的/dev/sda，VD=1就是/dev/sdb以此类推，但是如果有jbod的分区，先排列jbod分区，如jbod的到了/dev/sdc，VD０则是/dev/sdd，以此类推；<br>DG：是在raid卡里配置卷组的顺序；</p>
+</blockquote>
+<h5 id="Raid卡日志收集相关命令"><a href="#Raid卡日志收集相关命令" class="headerlink" title="Raid卡日志收集相关命令"></a>Raid卡日志收集相关命令</h5><p><code>storcli64 /c0 show time</code> <code>显示raid的时间</code></p>
+<p><code>storcli64 /c0 show alilog logfile=node-x.alilog</code> <code>获取alilog，所有的log都包括了</code></p>
+<p><code>storcli64 /c0 show all logfile=node-x.all.log</code>    <code>raid卡的信息</code></p>
+<p><code>storcli64 /c0 show badblocks</code>    <code>磁盘坏道的信息</code></p>
+<p><code>perccli64 /c0 show events filter=fatal</code> <code>显示事件级别为fatal的，可以获取所有毁灭性事件的信息，发现磁盘故障或raid卡故障</code></p>
+<p><code>perccli64 /c0 show cc</code> <code>数据一致性检测，raid1以上的级别多个盘的数据是需要进行一致性检测的，但是单盘raid0可能是不需要的，是否影响性能不确定</code></p>
+<h3 id="Section-Five-Smartctl-Get-Error-info-of-Disks"><a href="#Section-Five-Smartctl-Get-Error-info-of-Disks" class="headerlink" title="Section Five : Smartctl Get Error info of Disks"></a>Section Five : Smartctl Get Error info of Disks</h3><h4 id="Common-Commands-Usage-Description"><a href="#Common-Commands-Usage-Description" class="headerlink" title="Common Commands Usage Description"></a>Common Commands Usage Description</h4><blockquote>
+<p><code>--scan</code>        Scan for devices </p>
+<p><code>--scan-open</code>    Scan for devices and try to open each device</p>
+<p><code>-x, --xall</code>     Show all information for device</p>
+<p><code>-a, --all</code>        Show all SMART information for device</p>
+<p><code>-i, --info</code>    Show identity information for device</p>
+<p><code>-d TYPE, --device=TYPE</code>     Specify device type to one of: ata, scsi, nvme[,NSID], sat[,auto][,N][+TYPE], usbcypress[,X], usbjmicron[,p][,x][,N], usbprolific, usbsunplus, marvell, areca,N/E, 3ware,N, hpt,L/M/N, megaraid,N, aacraid,H,L,ID, cciss,N, auto, test</p>
+<p><code>-s VALUE, --smart=VALUE</code>    Enable/disable SMART on device (on/off)</p>
+<p><code>-o VALUE, --offlineauto=VALUE(ATA)</code>    Enable/disable automatic offline testing on device (on/off)</p>
+<p><code>-S VALUE, --saveauto=VALUE(ATA)</code>    Enable/disable Attribute autosave on device (on/off)</p>
+<p><code>-H, --health</code>    Show device SMART health status</p>
+<p><code>-c, --capabilities(ATA,NVMe)</code>    Show device SMART capabilities</p>
+<p><code>-A, --attributes</code>    Show device SMART vendor-specific Attributes and values</p>
+<p><code>-l TYPE, --log=TYPE</code>    Show device log. TYPE: error, selftest, selective, directory[,g|s],<br>​                               xerror[,N][,error], xselftest[,N][,selftest],<br>​                               background, sasphy[,reset], sataphy[,reset],<br>​                               scttemp[sts,hist], scttempint,N[,p],<br>​                               scterc[,N,M], devstat[,N], ssd,<br>​                               gplog,N[,RANGE], smartlog,N[,RANGE],<br>​                               nvmelog,N,SIZE</p>
+<p><code>-t TEST, --test=TEST</code>    Run test. TEST: offline, short, long, conveyance, force, vendor,N,<br>​                        select,M-N, pending,N, afterselect,[on|off]</p>
+<p><code>-X, --abort</code>    Abort any non-captive test on device</p>
+</blockquote>
+<h4 id="Get-info-for-dev-sdf"><a href="#Get-info-for-dev-sdf" class="headerlink" title="Get info for /dev/sdf"></a>Get info for /dev/sdf</h4><h5 id="查看所有设备列表"><a href="#查看所有设备列表" class="headerlink" title="查看所有设备列表"></a>查看所有设备列表</h5><pre><code class="bash">[root@node-15 ~]# smartctl --scan
+/dev/sda -d scsi # /dev/sda, SCSI device
+/dev/sdb -d scsi # /dev/sdb, SCSI device
+/dev/sdc -d scsi # /dev/sdc, SCSI device
+/dev/sdd -d scsi # /dev/sdd, SCSI device
+/dev/sde -d scsi # /dev/sde, SCSI device
+/dev/sdf -d scsi # /dev/sdf, SCSI device
+/dev/sdg -d scsi # /dev/sdg, SCSI device
+/dev/sdh -d scsi # /dev/sdh, SCSI device
+/dev/sdi -d scsi # /dev/sdi, SCSI device
+/dev/sdj -d scsi # /dev/sdj, SCSI device
+/dev/sdk -d scsi # /dev/sdk, SCSI device
+/dev/sdl -d scsi # /dev/sdl, SCSI device
+/dev/sdm -d scsi # /dev/sdm, SCSI device
+/dev/sdn -d scsi # /dev/sdn, SCSI device
+/dev/sdo -d scsi # /dev/sdo, SCSI device
+/dev/bus/0 -d megaraid,0 # /dev/bus/0 [megaraid_disk_00], SCSI device
+/dev/bus/0 -d megaraid,1 # /dev/bus/0 [megaraid_disk_01], SCSI device
+/dev/bus/0 -d megaraid,2 # /dev/bus/0 [megaraid_disk_02], SCSI device
+/dev/bus/0 -d megaraid,3 # /dev/bus/0 [megaraid_disk_03], SCSI device
+/dev/bus/0 -d megaraid,4 # /dev/bus/0 [megaraid_disk_04], SCSI device
+/dev/bus/0 -d megaraid,5 # /dev/bus/0 [megaraid_disk_05], SCSI device
+/dev/bus/0 -d megaraid,6 # /dev/bus/0 [megaraid_disk_06], SCSI device
+/dev/bus/0 -d megaraid,7 # /dev/bus/0 [megaraid_disk_07], SCSI device
+/dev/bus/0 -d megaraid,8 # /dev/bus/0 [megaraid_disk_08], SCSI device
+/dev/bus/0 -d megaraid,9 # /dev/bus/0 [megaraid_disk_09], SCSI device
+/dev/bus/0 -d megaraid,10 # /dev/bus/0 [megaraid_disk_10], SCSI device
+/dev/bus/0 -d megaraid,11 # /dev/bus/0 [megaraid_disk_11], SCSI device
+/dev/bus/0 -d megaraid,12 # /dev/bus/0 [megaraid_disk_12], SCSI device
+/dev/bus/0 -d megaraid,13 # /dev/bus/0 [megaraid_disk_13], SCSI device
+/dev/bus/0 -d megaraid,14 # /dev/bus/0 [megaraid_disk_14], SCSI device
+/dev/bus/0 -d megaraid,15 # /dev/bus/0 [megaraid_disk_15], SCSI device</code></pre>
+<blockquote>
+<p>Note:</p>
+<p>通过前面的章节我们定位到了磁盘/dev/sdf在perccli里的DID即device_id为6，也就是/dev/bus/0 -d megaraid,6</p>
+</blockquote>
+<h5 id="查看磁盘信息"><a href="#查看磁盘信息" class="headerlink" title="查看磁盘信息"></a>查看磁盘信息</h5><pre><code class="bash">[root@node-15 ~]# smartctl -i -d megaraid,6 /dev/sdf
+smartctl 6.5 2016-05-07 r4318 [x86_64-linux-3.10.0-327.20.1.es2.el7.x86_64] (local build)
+Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Model Family:     Seagate Constellation.2 (SATA)
+Device Model:     ST91000640NS
+Serial Number:    9XGA228L
+LU WWN Device Id: 5 000c50 0918f2f8a
+Add. Product Id:  DELL(tm)
+Firmware Version: AA63
+User Capacity:    1,000,204,886,016 bytes [1.00 TB]
+Sector Size:      512 bytes logical/physical
+Rotation Rate:    7200 rpm
+Form Factor:      2.5 inches
+Device is:        In smartctl database [for details use: -P show]
+ATA Version is:   ATA8-ACS T13/1699-D revision 4
+SATA Version is:  SATA 3.0, 6.0 Gb/s (current: 6.0 Gb/s)
+Local Time is:    Fri Jan 11 11:28:46 2019 CST
+SMART support is: Available - device has SMART capability.
+SMART support is: Enabled</code></pre>
+<h5 id="查看磁盘的属性信息"><a href="#查看磁盘的属性信息" class="headerlink" title="查看磁盘的属性信息"></a>查看磁盘的属性信息</h5><blockquote>
+<p>一般此处可以用来查看磁盘的整体健康状态指标参数</p>
+<p>针对以下输出信息，字段的解释</p>
+<ul>
+<li><strong>ID</strong>：属性ID，通常是一个1到255之间的十进制或十六进制的数字。</li>
+<li><strong>ATTRIBUTE_NAME</strong>：硬盘制造商定义的属性名。</li>
+<li><strong>FLAG</strong>：属性操作标志（可以忽略）。</li>
+<li><strong>VALUE</strong>：这是表格中最重要的信息之一，代表给定属性的标准化值，在1到253之间。253意味着最好情况，1意味着最坏情况。取决于属性和制造商，初始化VALUE可以被设置成100或200.</li>
+<li><strong>WORST</strong>：所记录的最小VALUE。</li>
+<li><strong>THRESH</strong>：在报告硬盘FAILED状态前，WORST可以允许的最小值，也就是WORST如果小于THRESH,磁盘就会报告FAILED。</li>
+<li><strong>TYPE</strong>：属性的类型（Pre-fail或Old<em>age）。Pre-fail类型的属性可被看成一个关键属性，表示参与磁盘的整体SMART健康评估（PASSED/FAILED）。如果任何Pre-fail类型的属性故障，那么可视为磁盘将要发生故障。另一方面，Old</em>age类型的属性可被看成一个非关键的属性（如正常的磁盘磨损），表示不会使磁盘本身发生故障。</li>
+<li><strong>UPDATED</strong>：表示属性的更新频率。Offline代表磁盘上执行离线测试的时间。</li>
+<li><strong>WHEN_FAILED</strong>：如果VALUE小于等于THRESH，会被设置成“FAILING_NOW”；如果WORST小于等于THRESH会被设置成“In_the_past”；如果都不是，会被设置成“-”。在“FAILING_NOW”情况下，需要尽快备份重要文件，特别是属性是Pre-fail类型时。“In_the_past”代表属性已经故障了，但在运行测试的时候没问题。“-”代表这个属性从没故障过。</li>
+<li><strong>RAW_VALUE</strong>：制造商定义的原始值，从VALUE派生。</li>
+</ul>
+</blockquote>
+<pre><code class="bash">[root@node-15 ~]# smartctl -A -d megaraid,6 /dev/sdf  
+smartctl 6.5 2016-05-07 r4318 [x86_64-linux-3.10.0-327.20.1.es2.el7.x86_64] (local build)
+Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF READ SMART DATA SECTION ===
+SMART Attributes Data Structure revision number: 10
+Vendor Specific SMART Attributes with Thresholds:
+ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE
+  1 Raw_Read_Error_Rate     0x010f   081   038   044    Pre-fail  Always   In_the_past 151546765
+  3 Spin_Up_Time            0x0103   094   094   000    Pre-fail  Always       -       0
+  4 Start_Stop_Count        0x0032   100   100   020    Old_age   Always       -       21
+  5 Reallocated_Sector_Ct   0x0133   100   100   036    Pre-fail  Always       -       0
+  7 Seek_Error_Rate         0x000f   085   060   030    Pre-fail  Always       -       338813105
+  9 Power_On_Hours          0x0032   079   079   000    Old_age   Always       -       18784
+ 10 Spin_Retry_Count        0x0013   100   100   097    Pre-fail  Always       -       0
+ 12 Power_Cycle_Count       0x0032   100   100   020    Old_age   Always       -       21
+184 End-to-End_Error        0x0032   100   100   099    Old_age   Always       -       0
+187 Reported_Uncorrect      0x0032   001   001   000    Old_age   Always       -       1710
+188 Command_Timeout         0x0032   100   100   000    Old_age   Always       -       0
+189 High_Fly_Writes         0x003a   100   100   000    Old_age   Always       -       0
+190 Airflow_Temperature_Cel 0x0022   069   053   045    Old_age   Always       -       31 (Min/Max 24/40)
+191 G-Sense_Error_Rate      0x0032   100   100   000    Old_age   Always       -       0
+192 Power-Off_Retract_Count 0x0032   100   100   000    Old_age   Always       -       19
+193 Load_Cycle_Count        0x0032   100   100   000    Old_age   Always       -       852
+194 Temperature_Celsius     0x0022   031   047   000    Old_age   Always       -       31 (0 14 0 0 0)
+195 Hardware_ECC_Recovered  0x001a   117   099   000    Old_age   Always       -       151546765
+197 Current_Pending_Sector  0x0012   084   084   000    Old_age   Always       -       688
+198 Offline_Uncorrectable   0x0010   084   084   000    Old_age   Offline      -       688
+199 UDMA_CRC_Error_Count    0x003e   200   200   000    Old_age   Always       -       0
+240 Head_Flying_Hours       0x0000   100   253   000    Old_age   Offline      -       8093 (164 214 0)
+241 Total_LBAs_Written      0x0000   100   253   000    Old_age   Offline      -       1870535293
+242 Total_LBAs_Read         0x0000   100   253   000    Old_age   Offline      -       1530387871</code></pre>
+<h5 id="查看磁盘的健康检测状态"><a href="#查看磁盘的健康检测状态" class="headerlink" title="查看磁盘的健康检测状态"></a>查看磁盘的健康检测状态</h5><blockquote>
+<p>Note:</p>
+<p>关于以下检测结果，说明检测结果是PASSED的，就是磁盘还可以使用，但是列出了一条检测异常的WORST&lt;THRESH，TYPE是Pre-fail，WHEN_FAILED是In_the_past，说明预测这个盘快坏了。</p>
+</blockquote>
+<pre><code class="bash">[root@node-15 ~]# smartctl -H -d megaraid,6 /dev/sdf  
+smartctl 6.5 2016-05-07 r4318 [x86_64-linux-3.10.0-327.20.1.es2.el7.x86_64] (local build)
+Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF READ SMART DATA SECTION ===
+SMART Status not supported: ATA return descriptor not supported by controller firmware
+SMART overall-health self-assessment test result: PASSED
+Warning: This result is based on an Attribute check.
+Please note the following marginal Attributes:
+ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE
+  1 Raw_Read_Error_Rate     0x010f   081   038   044    Pre-fail  Always   In_the_past 151546765</code></pre>
+<h5 id="查看磁盘的错误日志"><a href="#查看磁盘的错误日志" class="headerlink" title="查看磁盘的错误日志"></a>查看磁盘的错误日志</h5><pre><code class="bash">[root@node-15 ~]# smartctl -l error -d megaraid,6 /dev/sdf
+smartctl 6.5 2016-05-07 r4318 [x86_64-linux-3.10.0-327.20.1.es2.el7.x86_64] (local build)
+Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF READ SMART DATA SECTION ===
+SMART Error Log Version: 1
+ATA Error Count: 46431 (device log contains only the most recent five errors)
+        CR = Command Register [HEX]
+        FR = Features Register [HEX]
+        SC = Sector Count Register [HEX]
+        SN = Sector Number Register [HEX]
+        CL = Cylinder Low Register [HEX]
+        CH = Cylinder High Register [HEX]
+        DH = Device/Head Register [HEX]
+        DC = Device Command Register [HEX]
+        ER = Error register [HEX]
+        ST = Status register [HEX]
+Powered_Up_Time is measured from power on, and printed as
+DDd+hh:mm:SS.sss where DD=days, hh=hours, mm=minutes,
+SS=sec, and sss=millisec. It &quot;wraps&quot; after 49.710 days.
+
+Error 46431 occurred at disk power-on lifetime: 18640 hours (776 days + 16 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 51 00 ff ff ff 0f  Error: UNC at LBA = 0x0fffffff = 268435455
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  42 00 00 ff ff ff 4f 00  46d+15:15:32.968  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:29.901  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:26.825  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:23.965  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:20.905  READ VERIFY SECTOR(S) EXT
+
+Error 46430 occurred at disk power-on lifetime: 18640 hours (776 days + 16 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 51 00 ff ff ff 0f  Error: UNC at LBA = 0x0fffffff = 268435455
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  42 00 00 ff ff ff 4f 00  46d+15:15:29.901  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:26.825  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:23.965  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:20.905  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:18.093  READ VERIFY SECTOR(S) EXT
+
+Error 46429 occurred at disk power-on lifetime: 18640 hours (776 days + 16 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 51 00 ff ff ff 0f  Error: UNC at LBA = 0x0fffffff = 268435455
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  42 00 00 ff ff ff 4f 00  46d+15:15:26.825  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:23.965  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:20.905  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:18.093  READ VERIFY SECTOR(S) EXT
+  b0 da 00 00 4f c2 00 00  46d+15:15:17.838  SMART RETURN STATUS
+
+Error 46428 occurred at disk power-on lifetime: 18640 hours (776 days + 16 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 51 00 ff ff ff 0f  Error: UNC at LBA = 0x0fffffff = 268435455
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  42 00 00 ff ff ff 4f 00  46d+15:15:23.965  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:20.905  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:18.093  READ VERIFY SECTOR(S) EXT
+  b0 da 00 00 4f c2 00 00  46d+15:15:17.838  SMART RETURN STATUS
+  2f 00 01 e0 00 00 40 00  46d+15:15:17.703  READ LOG EXT
+
+Error 46427 occurred at disk power-on lifetime: 18640 hours (776 days + 16 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 51 00 ff ff ff 0f  Error: UNC at LBA = 0x0fffffff = 268435455
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  42 00 00 ff ff ff 4f 00  46d+15:15:20.905  READ VERIFY SECTOR(S) EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:18.093  READ VERIFY SECTOR(S) EXT
+  b0 da 00 00 4f c2 00 00  46d+15:15:17.838  SMART RETURN STATUS
+  2f 00 01 e0 00 00 40 00  46d+15:15:17.703  READ LOG EXT
+  42 00 00 ff ff ff 4f 00  46d+15:15:15.276  READ VERIFY SECTOR(S) EXT</code></pre>
+<h5 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h5><blockquote>
+<ul>
+<li>如果没有开启磁盘的smart可以通过-s on device开启</li>
+<li>一般来说如果samrtctl -i 获取info时没有什么信息输出且smart support是允许的可用的，那么说明可能需要做test才能获取到-t short/long，该测试不会破坏硬盘上的数据，但对于存储一般不适用离线offline测试</li>
+<li>收集时可以通过-x -a参数获取更全面的磁盘信息</li>
+<li>smartctl是可以配置服务的/etc/smartmontools/smartd.conf，对此目前没有研究，后续有研究成果再更新</li>
+</ul>
+</blockquote>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2020
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().trim().split('\n').length, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        border: 1px solid #e2dede;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>

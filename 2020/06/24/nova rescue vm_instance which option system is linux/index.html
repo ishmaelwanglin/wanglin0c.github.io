@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Wang Lin . OPS</title>
-  <meta name="keywords" content="">
-  <meta name="description" content="Wang Lin . OPS">
+  <title>nova rescue vm_instance | Wang Lin . OPS</title>
+  <meta name="keywords" content=" openstack ">
+  <meta name="description" content="nova rescue vm_instance | Wang Lin . OPS">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta property="og:type" content="website">
 <meta property="og:title" content="about me from c lang">
@@ -51,7 +51,7 @@
 
 
 <body>
-<aside class="nav mobile">
+<aside class="nav">
     <div class="nav-left">
         <a href="/" class="avatar_target">
     <img class="avatar" src="/img/avatar.jpg" />
@@ -254,12 +254,47 @@
         </div>
     </div>
 </aside>
-<div id="post" class="index">
+<div id="post">
     <div class="pjax">
-        <article class="index">
-            <div class="toc-ref">
+        <article id="post-nova rescue vm_instance which option system is linux" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Why-Blog"><span class="toc-text">Why Blog</span></a></li></ol>
+        <h1 class="article-title">nova rescue vm_instance</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="虚拟化">虚拟化</a>
+            
+        </span>
+        
+        
+        <span class="tag">
+            <i class="iconfont icon-tag"></i>
+            
+            <a class="color5">openstack</a>
+            
+        </span>
+        
+    </div>
+    <div class="article-meta">
+        
+            发布时间 : <time class="date" title='最后更新: 2020-06-24 22:45:40'>2020-06-24 00:00</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#nova-rescue-vm-instance"><span class="toc-text">nova rescue vm_instance</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -272,10 +307,137 @@
     }
 </style>
 </div>
-            <h1 id="Why-Blog"><a href="#Why-Blog" class="headerlink" title="Why Blog"></a>Why Blog</h1>
-        </article>
-        
-        
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="nova-rescue-vm-instance"><a href="#nova-rescue-vm-instance" class="headerlink" title="nova rescue vm_instance"></a>nova rescue vm_instance</h1><p>which option system is linux</p>
+<p align=right>es.ops 20190426</p>
+
+
+
+<pre>    openstack环境中的虚拟机的救援模式,在ceph作为cinder backend情况下测试通过．</pre>
+
+<p>nova rescue命令使用帮助</p>
+<pre><code>[root@node-1 ~]# nova help rescue 
+usage: nova rescue [--password &lt;password&gt;] [--image &lt;image&gt;] &lt;server&gt;
+
+Reboots a server into rescue mode, which starts the machine from either the
+initial image or a specified image, attaching the current boot disk as
+secondary.
+
+Positional arguments:
+  &lt;server&gt;               Name or ID of server.
+
+Optional arguments:
+  --password &lt;password&gt;  The admin password to be set in the rescue
+                         environment.
+  --image &lt;image&gt;        The image to rescue with.</code></pre><p>在控制节点执行如下命令<code>nova rescue vm_uuid</code>：</p>
+<pre><code>[root@node-1 ~]# nova rescue 473fbedd-73e3-4163-a859-4010b0e8c4ae --password passw0rd
++-----------+----------+
+| Property  | Value    |
++-----------+----------+
+| adminPass | passw0rd |
++-----------+----------+</code></pre><blockquote>
+<p>Note: </p>
+<p>这里最好要指定密码，并且作为一个通用救援密码rescue_password，该虚拟机有第一次rescue之后rescue密码就不能改变了，以后再对该虚拟机进行救援，只能使用这个密码了，下次再设置是无效的。</p>
+<p>Cause: rescue虚拟机会在ceph里生成一个用指定镜像(如果没有指定则是使用虚拟机的源镜像)创建的卷,rebuild一个newVM,并将原虚拟机的卷作为vdb挂载给newVM,如果已经存在rescue的卷则不会再次生成,所以第二次rescue的密码并不能修改,除非手动删除该rescue卷.</p>
+<pre><code>[root@node-1 ~]# rbd ls compute|grep 473fbedd-73e3-4163-a859-4010b0e8c4ae
+473fbedd-73e3-4163-a859-4010b0e8c4ae_disk
+473fbedd-73e3-4163-a859-4010b0e8c4ae_disk.rescue</code></pre><p>在删除该虚拟机的时候会将rescue的卷一并删除.</p>
+</blockquote>
+<p>此时虚拟机会进行重启，Horizon界面的虚拟机状态变为”救援”,nova list命令看到虚拟机也会变成RESCUE状态.</p>
+<p>rescue的过程，会用创建虚拟机的image作为引导镜像来引导虚拟机，并把虚拟机作为一个vdb盘，挂载到虚拟机上，进入虚拟机后可以通过lsblk可以看到</p>
+<pre><code>[root@wl-test2 ~]# lsblk
+NAME   MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+vda    253:0    0  10G  0 disk 
+└─vda1 253:1    0  10G  0 part /
+vdb    253:16   0  60G  0 disk 
+└─vdb1 253:17   0  60G  0 part </code></pre><blockquote>
+<p>Note: </p>
+<p>如何进入rescue模式的虚拟机，此时可以通过ssh连接并使用root/rescue_password 进入虚拟机。比例如: </p>
+<p><code>nova ssh vm_uuid (此方式需要虚拟机有一个物理节点能通信的ip，或者从命名空间ssh连接)</code></p>
+<p>或者通过vnc的方式,页面上不显示vnc标签页,只能通过命令获取vnc地址:</p>
+<p><code>nova get-vnc-console 473fbedd-73e3-4163-a859-4010b0e8c4ae novnc</code></p>
+<pre><code>[root@node-1 ~]# nova get-vnc-console 473fbedd-73e3-4163-a859-4010b0e8c4ae novnc
++-------+----------------------------------------------------------------------------------------+
+| Type  | Url                                                                                    |
++-------+----------------------------------------------------------------------------------------+
+| novnc | https://sz.easystack.cn/novnc/vnc_auto.html?token=f3974443-9541-4447-bc0b-c5f3bfb5c65a |
++-------+----------------------------------------------------------------------------------------+</code></pre><p>这里获取的https://…这个url直接复制到浏览器即可打开虚拟机的vnc界面.</p>
+</blockquote>
+<p>将vdb即虚拟机的磁盘挂载给/mnt目录(目录可以任意指定),挂载命令如下:</p>
+<p><code>mount -o nouuid  /dev/vdb1 /mnt</code></p>
+<blockquote>
+<p>Note: </p>
+<p>这里vdb的uuid与vda的uuid一样，所以需要挂载参数nouuid</p>
+</blockquote>
+<p>此时cd /mnt后，可以看原虚拟机的所有目录</p>
+<pre><code>[root@wl-test2 ~]# ls /mnt
+bin   dev  home  lib64  mnt  proc  run   srv  tmp  var
+boot  etc  lib   media  opt  root  sbin  sys  usr</code></pre><p>修复场景：</p>
+<pre><code>1. 忘记了root密码
+
+[root@wl-test2 ~]# chroot /mnt
+[root@wl-test2 /]# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[root@wl-test2 /]# passwd
+Changing password for user root.
+New password: 
+Retype new password: 
+passwd: all authentication tokens updated successfully.
+
+此时root密码已经修改完成，国外客户使用selinux较多，如果使用了selinux还需要执行
+touch /.autorelabel 更新一下文件时间戳.
+
+退出rescue状态后，即可使用新密码登录虚拟机root用户
+
+2. xfs文件系统损坏
+
+xfs_repair /dev/vdb1
+
+如果此时有报错 ERROR: The filesystem has valuable metadata changes in a log which needs to be replayed. ....
+
+执行
+
+xfs_repair -L /dev/vdb1    清理掉xfs的日志信息(可能会丢失一些尚未完成的日志数据),再修复.
+3. login死循环
+
+vnc登录输入用户密码正确后，还是login输入用户密码,一直死循环
+根据网络查询，可能是login的pam策略问题:
+/etc/pam.d/login 中
+session required /lib/security/pam_limits.so       # x86_64的系统没有这个文件
+修改成
+session required /lib64/security/pam_limits.so
+重启服务器
+4. windows虚拟机(待测试)
+当unrescue后提示不能启动时，需要重新进入rescue模式，给boot分区增加盘符，并使用bcdedit命令将
+boot分区的3个参数修改一下：
+（e:\为隐藏的100M分区）
+bcdedit /store e:\boot\bcd /set {bootmgr} device partition=c:
+bcdedit /store e:\boot\bcd /set {default} device partition=c:
+bcdedit /store e:\boot\bcd /set {default} osdevice partition=c:
+
+修改完成后再 unrescue 就可以恢复了。</code></pre><p>退出rescue模式:</p>
+<p>修复完成后，退出rescue模式，在控制节点执行<code>nova unrescue vm_uuid</code></p>
+<p><code>[root@node-1 ~]# nova unrescue 5ec5fed5-90ac-464e-a584-6b303c29ff0a</code></p>
+<p>之后，虚拟机会再次重启，进入正常的运行状态，此时界面上的虚拟机的状态变回运行中。</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。 </span>
+    </div>
+</article>
+
+
+
+
+
+
+
+    
+
+
+
+
     </div>
     <div class="copyright">
         <p class="footer-entry">
@@ -284,11 +446,11 @@
 <p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
 
     </div>
-</div>
-<div class="full-toc">
-    <button class="full" data-title="切换全屏"><span class="min "></span></button>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏"><span class="min "></span></button>
 <a class="" id="rocket" ></a>
 
+    </div>
 </div>
 
 </body>
