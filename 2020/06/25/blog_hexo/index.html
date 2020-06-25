@@ -6,15 +6,23 @@
   <meta name="keywords" content=" hexo ">
   <meta name="description" content="Hexo+Github自建博客 | Wang Lin . OPS">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about me from c lang">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta name="description" content="概述 本文主要是把自己部署github pages和hexo的过程进行记录，为近期使用此方法部署的同志们提供参考。 还有gitee的部分，同样适用，但是gitee的由于对我下载的主题支持的不好，所以又改回github。 环境：  macOS 系统 本地部署 Nodejs,hexo,github&#x2F;gitee  部署步骤  下载安装git ， brew install git （brew不会用可以go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo+Github自建博客">
+<meta property="og:url" content="http://yoursite.com/2020/06/25/blog_hexo/index.html">
 <meta property="og:site_name" content="Wang Lin . OPS">
+<meta property="og:description" content="概述 本文主要是把自己部署github pages和hexo的过程进行记录，为近期使用此方法部署的同志们提供参考。 还有gitee的部分，同样适用，但是gitee的由于对我下载的主题支持的不好，所以又改回github。 环境：  macOS 系统 本地部署 Nodejs,hexo,github&#x2F;gitee  部署步骤  下载安装git ， brew install git （brew不会用可以go">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-24T09:44:30.787Z">
-<meta property="article:modified_time" content="2020-06-24T09:44:30.786Z">
+<meta property="og:image" content="http://yoursite.com/2020/06/25/blog_hexo/hexo_01.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/25/blog_hexo/hexo_02.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/25/blog_hexo/hexo_03.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/25/blog_hexo/image-20200625100207147.png">
+<meta property="article:published_time" content="2020-06-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-25T02:55:56.575Z">
 <meta property="article:author" content="WangLin">
+<meta property="article:tag" content="hexo">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/06/25/blog_hexo/hexo_01.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -303,7 +311,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2020-06-25 10:29:10'>2020-06-25 00:00</time>
+            发布时间 : <time class="date" title='最后更新: 2020-06-25 10:55:56'>2020-06-25 00:00</time>
         
     </div>
     <div class="article-meta">
@@ -314,7 +322,7 @@
     
     <div class="toc-ref">
     
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概述"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#部署步骤"><span class="toc-text">部署步骤</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -330,41 +338,50 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <ol>
-<li><p>下载并安装nodejs: <a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener" title="nodejs_LTS">nodejs下载</a></p>
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><hr>
+<p>本文主要是把自己部署github pages和hexo的过程进行记录，为近期使用此方法部署的同志们提供参考。</p>
+<p>还有gitee的部分，同样适用，但是gitee的由于对我下载的主题支持的不好，所以又改回github。</p>
+<p>环境：</p>
+<blockquote>
+<p>macOS 系统</p>
+<p>本地部署</p>
+<p>Nodejs,hexo,github/gitee</p>
+</blockquote>
+<h1 id="部署步骤"><a href="#部署步骤" class="headerlink" title="部署步骤"></a>部署步骤</h1><hr>
+<ol>
+<li><p>下载安装git ， <code>brew install git</code> （brew不会用可以google，或者手动下载安装）</p>
+<p>下载并安装nodejs: <a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener" title="nodejs_LTS">nodejs下载</a>，下载完是个pkg，直接安装即可，如图：</p>
 <img src="/2020/06/25/blog_hexo/hexo_01.png" class="" title="node_js">
 
-
-
-</li>
-</ol>
-<p>   安装git ， <code>brew install git</code></p>
 <blockquote>
 <ul>
-<li><em>node.js</em>下载可以从其官方界面开始<a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">https://nodejs.org/zh-cn/</a></li>
-<li><em>Git</em>下载则可以从其官方界面开始<a href="https://git-scm.com/" target="_blank" rel="noopener">https://git-scm.com/</a></li>
+<li><em>node.js</em>其官方网站开始<a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">https://nodejs.org/zh-cn/</a></li>
+<li><em>Git</em>官方网站开始<a href="https://git-scm.com/" target="_blank" rel="noopener">https://git-scm.com/</a></li>
 </ul>
 </blockquote>
-<ol start="2">
-<li><p>创建一个本地blog的文件夹: myblog_web</p>
 </li>
-<li><p>安装Hexo</p>
-<p>先在macOS上安全npm: <code>brew install npm</code></p>
-<p>修改阿里的npm源: <code>npm config set registry https://registry.npm.taobao.org</code></p>
-<p>再安装hexo </p>
+</ol>
+<ol start="2">
+<li><p>安装npm，通过npm部署hexo</p>
+<pre><code>brew install npm
+修改阿里的npm源: npm config set registry https://registry.npm.taobao.org
+查看npm源是否修改成功： npm config get    </code></pre></li>
+<li><p>创建一个本地blog项目的文件夹: myblog_web</p>
+</li>
+<li><p>再安装hexo,执行 <code>npm install hexo-cli -g</code></p>
 <blockquote>
-<p><code>npm install hexo-cli -g</code> </p>
+<p>Note:</p>
 <p>或者安装完整的Hexo <code>npm install hexo</code></p>
 <p>Linux的话需要把node_modules目录加入到环境变量</p>
 <p><code>echo &#39;PATH=&quot;$PATH:./node_modules/.bin&quot;&#39; &gt;&gt; ~/.profile</code></p>
+<p>这部分来自hexo项目<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo官网</a>的说明</p>
 </blockquote>
 <p>安装插件：</p>
 <p><code>npm install hexo-deployer-git --save</code>安装该插件可以使每次提交到remote的时候用–force的方式强制更新。</p>
 </li>
-<li><p>进到myblog_web目录，执行<code>hexo init</code>进行初始化,然后等着自动从git上拉取资源</p>
-</li>
-<li><p>资源拉取完成之后可以通过<code>npm fund</code> 查看项目的依赖信息</p>
-<pre><code>➜  blog_hexo npm fund
+<li><p>初始化hexo项目，进到myblog_web目录，执行<code>hexo init</code>或者<code>hexo init path/myblog_web</code>，然后等着自动从git上拉取项目到本地。</p>
+<p>项目拉取完成之后可以通过<code>npm fund</code> 查看项目的依赖信息</p>
+<pre><code>➜  myblog_web npm fund
 hexo-site@0.0.0
 ├─┬ https://opencollective.com/hexo
 │ └── hexo@4.2.1
@@ -376,7 +393,7 @@ hexo-site@0.0.0
 │ └── picomatch@2.2.2
 └─┬ https://github.com/sponsors/isaacs
   └── glob@7.1.6</code></pre></li>
-<li><p>执行<code>hexo g/hexo generate</code>生成网站(每更新一次都要重新生成静态页面)</p>
+<li><p>生成静态页面，执行<code>hexo g 或者 hexo generate</code>生成网站(每更新一次都要重新生成静态页面)，生成的页面在myblog_web/public文件夹</p>
 <pre><code>➜  myblog_web hexo g
 INFO  Start processing
 INFO  Files loaded in 105 ms
@@ -384,15 +401,16 @@ INFO  Generated: index.html
 ...
 INFO  Generated: 2020/06/24/hello-world/index.html
 INFO  28 files generated in 295 ms</code></pre></li>
-<li><p>执行<code>hexo s -p 8080</code> 启动本地服务（–debug），即可通过本地<a href="http://localhost:8080访问页面">http://localhost:8080访问页面</a>.</p>
+<li><p>执行<code>hexo s -p 8080</code> 启动本地服务，即可通过本地<a href="http://localhost:8080访问页面">http://localhost:8080访问页面</a>.</p>
 <blockquote>
 <p>Note:</p>
 <p>不指定端口的话就是默认端口4000</p>
+<p>加–debug 可以在屏幕显示调试日志</p>
 </blockquote>
 </li>
-<li><p>调整好本地下载的主题，可以从hexo官网下载: <a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a> </p>
+<li><p>下载一个自己喜欢的主题，可以从hexo官网下载: <a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a> ，调整好主题的配置，比如我选择的是<code>https://yelog.org/</code>的，对应的主题都有相关配置说明。</p>
 </li>
-<li><p>修改_config.yml, 在最下边deploy处修改内容如下：</p>
+<li><p>发布到github修改_config.yml, 在最下边deploy处修改内容如下：</p>
 <pre><code># Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
@@ -400,7 +418,7 @@ deploy:
   repo: https://gitee.com/wanglin2020/wanglin2020.git # 此是gitee上的项目地址
   branch: master</code></pre></li>
 </ol>
-<ol start="11">
+<ol start="10">
 <li><p>cd到myblog_web路径下，删除静态文件，生成静态文件，并发布,然后会要求输入gitee的用户密码，然后上传完成。</p>
 <blockquote>
 <pre><code>命令: 
