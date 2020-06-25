@@ -303,7 +303,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2020-06-25 10:06:25'>2020-06-25 00:00</time>
+            发布时间 : <time class="date" title='最后更新: 2020-06-25 10:18:56'>2020-06-25 00:00</time>
         
     </div>
     <div class="article-meta">
@@ -332,7 +332,7 @@
       
         <ol>
 <li><p>下载并安装nodejs: <a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener" title="nodejs_LTS">nodejs下载</a></p>
-<img src="/2020/06/25/blog_hexo/hexo_01.png" class="" title="image-20200625092118822">
+<img src="blog_hexo/hexo_01.png" style="zoom:60%">
 
 
 
@@ -407,21 +407,21 @@ deploy:
 hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy </code></pre></blockquote>
 </li>
 <li><p>在gitee上打开自己的项目, 如图，点开Service-&gt; Gitee Pages:</p>
-<img src="/2020/06/25/blog_hexo/hexo_02.png" class="" title="hexo_02">
+<img src="blog_hexo/hexo_02.png" style="zoom:90%" />
 
-<img src="/2020/06/25/blog_hexo/hexo_03.png" class="" title="hexo_03">
+<img src="blog_hexo/hexo_03.png" style="zoom:40%" />
 
 
 
 </li>
 </ol>
-<pre><code>&gt; 点击 Create 启动服务，创建完成之后会显示pages的访问地址</code></pre>{% asset_img hexo_04.png hexo_04 %}
+<pre><code>&gt; 点击 Create 启动服务，创建完成之后会显示pages的访问地址</code></pre><img src="blog_hexo/hexo_04.png" style="zoom:40%" />
 
 <p>​    </p>
 <ol start="13">
 <li>选择启动,为了能使用http://自定义名.gitee.io作为访问地址，最好创建的项目和你的自定义地址名一致，如：我的</li>
 </ol>
-{% asset_img hexo_05.png hexo_05 %}
+<img src="blog_hexo/hexo_05.png" style="zoom:50%"/>
 
 <p>Username是wanglin2020，我创建的项目也是wanglin2020（项目语言html）。这样我的pages地址就是<a href="http://wanglin2020.gitee.io。" target="_blank" rel="noopener">http://wanglin2020.gitee.io。</a></p>
 <ol start="13">
@@ -435,7 +435,7 @@ categories: 类别
 </ol>
 <ol start="14">
 <li><p>github的方法，就是创建一个repo和要用的域名一致即可，如图：</p>
-<img src="/2020/06/25/blog_hexo/hexo_06.png" class="" title="hexo_06">
+<img src="blog_hexo/hexo_06.png" style="zoom:50%" />
 </li>
 <li><p>然后其他的一样，把deploy的地址改成github的地址，就可以直接这么访问了。gitee对于模板的支持有点差。</p>
 </li>
@@ -444,11 +444,13 @@ categories: 类别
 <ul>
 <li>配置typora的图像设置部分，偏好设置&gt;图像，选择复制到指定路径，并勾选”优先使用相对路径”，这样在粘贴图片到文档上的时候，就会在文档所在目录创建一个同名的目录存放该文档上的图片，并且图片的路径显示为该文件夹的相对路径，如“blog_hexo/xxxxx.png”，此时typora就可以显示该相对路径的图片，如图：</li>
 </ul>
-<img src="/2020/06/25/blog_hexo/image-20200625100207147.png" class="" title="image-20200625100207147">
+<img src="blog_hexo/image-20200625100207147.png" style="zoom:50%" />
 
 <ul>
-<li>修改hexo配置，如我的项目myblog_web目录下的配置文件_config.yml, 修改post_asset_folder的值为true，即使用相对路径。</li>
-<li>本地安装插件， 执行命令<code>npm install hexo-image-link --save</code> 解决typora图片路径问题，本地预览的时候就可以看到图片了</li>
+<li><p>修改hexo配置，如我的项目myblog_web目录下的配置文件_config.yml, 修改post_asset_folder的值为true，即使用相对路径。</p>
+<pre><code>post_asset_folder: true</code></pre></li>
+<li><p>本地安装插件， 执行命令<code>npm install hexo-image-link --save</code> 解决typora图片路径问题，本地预览的时候就可以看到图片了。</p>
+</li>
 </ul>
 </blockquote>
 </li>
