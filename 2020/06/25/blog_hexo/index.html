@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>虚拟机PV扩容 | Wang Lin . OPS</title>
-  <meta name="keywords" content=" VM ">
-  <meta name="description" content="虚拟机PV扩容 | Wang Lin . OPS">
+  <title>Hexo+Github自建博客 | Wang Lin . OPS</title>
+  <meta name="keywords" content=" hexo ">
+  <meta name="description" content="Hexo+Github自建博客 | Wang Lin . OPS">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta property="og:type" content="website">
 <meta property="og:title" content="about me from c lang">
@@ -276,9 +276,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-虚拟机pv扩容" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-blog_hexo" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">虚拟机PV扩容</h1>
+        <h1 class="article-title">Hexo+Github自建博客</h1>
     
     <div class="article-meta">
         
@@ -288,7 +288,7 @@
             <i class="iconfont icon-category"></i>
             
             
-            <a  data-rel="虚拟化">虚拟化</a>
+            <a  data-rel="其他">其他</a>
             
         </span>
         
@@ -296,14 +296,14 @@
         <span class="tag">
             <i class="iconfont icon-tag"></i>
             
-            <a class="color3">VM</a>
+            <a class="color5">hexo</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2020-06-24 20:46:36'>1970-01-01 13:36</time>
+            发布时间 : <time class="date" title='最后更新: 2020-06-25 10:06:25'>2020-06-25 00:00</time>
         
     </div>
     <div class="article-meta">
@@ -330,50 +330,127 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <pre><code>[root@node-1 ~]# cinder list
-+--------------------------------------+-----------+----------+------+-------------+----------+--------------------------------------+
-|                  ID                  |   Status  |   Name   | Size | Volume Type | Bootable |             Attached to              |
-+--------------------------------------+-----------+----------+------+-------------+----------+--------------------------------------+
-| 51feba49-94a3-4195-9e79-5c0f743a1672 |   in-use  |  wl_v1   |  1   |      -      |  false   | 11c33291-e5ac-4c42-8573-e7d1871e09e3 |
-| 5e54a6cb-d9ff-4d6c-96d8-c20ef4b2314d |   in-use  | test-20G |  20  |      -      |  false   | 11c33291-e5ac-4c42-8573-e7d1871e09e3 |
-| e8ec481a-42fc-46ed-b082-ec7bfc21afad | available |   wl1    |  4   |      -      |  false   |                                      |
-+--------------------------------------+-----------+----------+------+-------------+----------+--------------------------------------+</code></pre><p>1.卸载掉要扩容的卷，使其变成available状态</p>
+        <ol>
+<li><p>下载并安装nodejs: <a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener" title="nodejs_LTS">nodejs下载</a></p>
+<img src="/2020/06/25/blog_hexo/hexo_01.png" class="" title="image-20200625092118822">
+
+
+
+</li>
+</ol>
+<p>   安装git ， <code>brew install git</code></p>
+<blockquote>
+<ul>
+<li><em>node.js</em>下载可以从其官方界面开始<a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">https://nodejs.org/zh-cn/</a></li>
+<li><em>Git</em>下载则可以从其官方界面开始<a href="https://git-scm.com/" target="_blank" rel="noopener">https://git-scm.com/</a></li>
+</ul>
+</blockquote>
 <ol start="2">
-<li><p>cinder extend volume_id {extend_size}:</p>
-<p> <code>cinder extend e8ec481a-42fc-46ed-b082-ec7bfc21afad 8</code></p>
+<li><p>创建一个本地blog的文件夹: myblog_web</p>
 </li>
-<li><p>在系统里看到，　lsblk中该磁盘vdd的大小已经改变了, 为8g,但是pvs里该卷还是4g</p>
+<li><p>安装Hexo</p>
+<p>先在macOS上安全npm: <code>brew install npm</code></p>
+<p>修改阿里的npm源: <code>npm config set registry https://registry.npm.taobao.org</code></p>
+<p>再安装hexo </p>
+<blockquote>
+<p><code>npm install hexo-cli -g</code> </p>
+<p>或者安装完整的Hexo <code>npm install hexo</code></p>
+<p>Linux的话需要把node_modules目录加入到环境变量</p>
+<p><code>echo &#39;PATH=&quot;$PATH:./node_modules/.bin&quot;&#39; &gt;&gt; ~/.profile</code></p>
+</blockquote>
+<p>安装插件：</p>
+<p><code>npm install hexo-deployer-git --save</code>安装该插件可以使每次提交到remote的时候用–force的方式强制更新。</p>
+</li>
+<li><p>进到myblog_web目录，执行<code>hexo init</code>进行初始化,然后等着自动从git上拉取资源</p>
+</li>
+<li><p>资源拉取完成之后可以通过<code>npm fund</code> 查看项目的依赖信息</p>
+<pre><code>➜  blog_hexo npm fund
+hexo-site@0.0.0
+├─┬ https://opencollective.com/hexo
+│ └── hexo@4.2.1
+├─┬ https://github.com/sponsors/ljharb
+│ └── resolve@1.17.0
+├─┬ https://github.com/chalk/ansi-styles?sponsor=1
+│ └── ansi-styles@4.2.1
+├─┬ https://github.com/sponsors/jonschlinkert
+│ └── picomatch@2.2.2
+└─┬ https://github.com/sponsors/isaacs
+  └── glob@7.1.6</code></pre></li>
+<li><p>执行<code>hexo g/hexo generate</code>生成网站(每更新一次都要重新生成静态页面)</p>
+<pre><code>➜  myblog_web hexo g
+INFO  Start processing
+INFO  Files loaded in 105 ms
+INFO  Generated: index.html
+...
+INFO  Generated: 2020/06/24/hello-world/index.html
+INFO  28 files generated in 295 ms</code></pre></li>
+<li><p>执行<code>hexo s -p 8080</code> 启动本地服务（–debug），即可通过本地<a href="http://localhost:8080访问页面">http://localhost:8080访问页面</a>.</p>
+<blockquote>
+<p>Note:</p>
+<p>不指定端口的话就是默认端口4000</p>
+</blockquote>
+</li>
+<li><p>调整好本地下载的主题，可以从hexo官网下载: <a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a> </p>
+</li>
+<li><p>修改_config.yml, 在最下边deploy处修改内容如下：</p>
+<pre><code># Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type: git
+  repo: https://gitee.com/wanglin2020/wanglin2020.git # 此是gitee上的项目地址
+  branch: master</code></pre></li>
+</ol>
+<ol start="11">
+<li><p>cd到myblog_web路径下，删除静态文件，生成静态文件，并发布,然后会要求输入gitee的用户密码，然后上传完成。</p>
+<blockquote>
+<pre><code>命令: 
+hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy </code></pre></blockquote>
+</li>
+<li><p>在gitee上打开自己的项目, 如图，点开Service-&gt; Gitee Pages:</p>
+<img src="/2020/06/25/blog_hexo/hexo_02.png" class="" title="hexo_02">
+
+<img src="/2020/06/25/blog_hexo/hexo_03.png" class="" title="hexo_03">
+
+
+
 </li>
 </ol>
-<p><img src="/home/wanglin/.config/Typora/typora-user-images/1563502411463.png" alt="1563502411463"></p>
-<ol start="4">
-<li><p>此时需要resize该pv: <code>pvreszie /dev/vdd</code></p>
-<p><img src="/home/wanglin/.config/Typora/typora-user-images/1563502530770.png" alt="1563502530770"></p>
-<blockquote>
-<p>此时pvs中vdd已经成为8g</p>
-</blockquote>
-</li>
-<li><p>此时我的testvolume也已经变成了8g．</p>
-<p><img src="/home/wanglin/.config/Typora/typora-user-images/1563502637118.png" alt="1563502637118"></p>
-</li>
-<li><p>此时还需要扩容ｌｖ</p>
-</li>
+<pre><code>&gt; 点击 Create 启动服务，创建完成之后会显示pages的访问地址</code></pre>{% asset_img hexo_04.png hexo_04 %}
+
+<p>​    </p>
+<ol start="13">
+<li>选择启动,为了能使用http://自定义名.gitee.io作为访问地址，最好创建的项目和你的自定义地址名一致，如：我的</li>
 </ol>
-<p><img src="/home/wanglin/.config/Typora/typora-user-images/1563502931136.png" alt="1563502931136"></p>
-<blockquote>
-<p>扩容时同步文件系统:</p>
-<p>lvextend -r -L 2g /dev/testvolume/lvol0</p>
-</blockquote>
-<ol start="7">
-<li><p>如果有挂载点需要同步文件系统</p>
-<p><code>resize2fs /dev/mapper/testvolume-lvol0</code></p>
-<blockquote>
-<p>此时挂载点的size也变成扩容的size</p>
-<p>如果是ext2的文件系统，可能需要</p>
-<p>es2fsck -f /dev/mapper/testvolume-lvol0</p>
-</blockquote>
+{% asset_img hexo_05.png hexo_05 %}
+
+<p>Username是wanglin2020，我创建的项目也是wanglin2020（项目语言html）。这样我的pages地址就是<a href="http://wanglin2020.gitee.io。" target="_blank" rel="noopener">http://wanglin2020.gitee.io。</a></p>
+<ol start="13">
+<li><p>添加博客文章，在source/_posts目录下添加markdown文件，需要注意的是每篇markdown文档的开头需要添加开头部分内容（可选，页面目录生成使用）：</p>
+<pre><code>---
+title: 文档名称
+date: 日期
+tags: 标签
+categories: 类别
+---</code></pre></li>
+</ol>
+<ol start="14">
+<li><p>github的方法，就是创建一个repo和要用的域名一致即可，如图：</p>
+<img src="/2020/06/25/blog_hexo/hexo_06.png" class="" title="hexo_06">
 </li>
-<li><p>如果是单个分区的，xfs系统的extend之后再挂载系统里要执行<code>xfs_groufs /dev/vdx</code></p>
+<li><p>然后其他的一样，把deploy的地址改成github的地址，就可以直接这么访问了。gitee对于模板的支持有点差。</p>
+</li>
+<li><p>使用typora编辑MD文档时添加图片的方法： </p>
+<blockquote>
+<ul>
+<li>配置typora的图像设置部分，偏好设置&gt;图像，选择复制到指定路径，并勾选”优先使用相对路径”，这样在粘贴图片到文档上的时候，就会在文档所在目录创建一个同名的目录存放该文档上的图片，并且图片的路径显示为该文件夹的相对路径，如“blog_hexo/xxxxx.png”，此时typora就可以显示该相对路径的图片，如图：</li>
+</ul>
+<img src="/2020/06/25/blog_hexo/image-20200625100207147.png" class="" title="image-20200625100207147">
+
+<ul>
+<li>修改hexo配置，如我的项目myblog_web目录下的配置文件_config.yml, 修改post_asset_folder的值为true，即使用相对路径。</li>
+<li>本地安装插件， 执行命令<code>npm install hexo-image-link --save</code> 解决typora图片路径问题，本地预览的时候就可以看到图片了</li>
+</ul>
+</blockquote>
 </li>
 </ol>
 
