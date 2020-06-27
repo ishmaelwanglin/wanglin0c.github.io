@@ -6,16 +6,17 @@
   <meta name="keywords" content=" Go ">
   <meta name="description" content="Golang学习1 | Wang Lin . OPS">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="欢迎留言评论welcome attach comments">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ops with cloud">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta name="description" content="打印fmt.Print fmt.Printf fmt.Println的区别Print(strValue) 打印后边不会换行 Printf(&quot;&quot;) 完全类似C语言的printf Println(strValue) 类似java，print的同时后边打印换行符. Go语言输出printf的时候不能把代码写成多行.输出转换说明修饰符%v 可以输出一切类型的数值， %T 可以显示数据类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang学习1">
+<meta property="og:url" content="http://yoursite.com/2020/06/26/golang_study_1/index.html">
 <meta property="og:site_name" content="Wang Lin . OPS">
-<meta property="og:description" content="欢迎留言评论welcome attach comments">
+<meta property="og:description" content="打印fmt.Print fmt.Printf fmt.Println的区别Print(strValue) 打印后边不会换行 Printf(&quot;&quot;) 完全类似C语言的printf Println(strValue) 类似java，print的同时后边打印换行符. Go语言输出printf的时候不能把代码写成多行.输出转换说明修饰符%v 可以输出一切类型的数值， %T 可以显示数据类">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-06-25T15:27:42.080Z">
+<meta property="article:published_time" content="2020-06-26T08:37:58.000Z">
+<meta property="article:modified_time" content="2020-06-27T04:10:04.810Z">
 <meta property="article:author" content="WangLin">
+<meta property="article:tag" content="Go">
 <meta name="twitter:card" content="summary">
 
 
@@ -325,7 +326,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2020-06-27 11:21:50'>2020-06-26 16:37</time>
+            发布时间 : <time class="date" title='最后更新: 2020-06-27 12:10:04'>2020-06-26 16:37</time>
         
     </div>
     <div class="article-meta">
@@ -347,7 +348,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#打印"><span class="toc-text">打印</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#fmt-Print-fmt-Printf-fmt-Println的区别"><span class="toc-text">fmt.Print fmt.Printf fmt.Println的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出转换说明修饰符"><span class="toc-text">输出转换说明修饰符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量"><span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#变量的声明方式"><span class="toc-text">变量的声明方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#批量声明常量"><span class="toc-text">批量声明常量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iota"><span class="toc-text">iota</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#整形变量"><span class="toc-text">整形变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#特殊整形"><span class="toc-text">特殊整形</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#浮点数"><span class="toc-text">浮点数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#布尔值"><span class="toc-text">布尔值</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串"><span class="toc-text">字符串</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#循环"><span class="toc-text">循环</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#range"><span class="toc-text">range</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#条件判断"><span class="toc-text">条件判断</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#特别注意"><span class="toc-text">特别注意</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#练习题"><span class="toc-text">练习题</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#打印"><span class="toc-text">打印</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#fmt-Print-fmt-Printf-fmt-Println的区别"><span class="toc-text">fmt.Print fmt.Printf fmt.Println的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出转换说明修饰符"><span class="toc-text">输出转换说明修饰符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量"><span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#变量的声明方式"><span class="toc-text">变量的声明方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#批量声明常量"><span class="toc-text">批量声明常量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iota"><span class="toc-text">iota</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#整形变量"><span class="toc-text">整形变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#特殊整形"><span class="toc-text">特殊整形</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#浮点数"><span class="toc-text">浮点数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#布尔值"><span class="toc-text">布尔值</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串"><span class="toc-text">字符串</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#循环"><span class="toc-text">循环</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#range"><span class="toc-text">range</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#goto"><span class="toc-text">goto</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#switch"><span class="toc-text">switch</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#条件判断"><span class="toc-text">条件判断</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#特别注意"><span class="toc-text">特别注意</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#练习题"><span class="toc-text">练习题</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -495,6 +496,119 @@ for index,value=range str{
 for index,value := range str{    //两个值都在for语言定义，作用域只在语句之后的大括号内，即函数作用域
   ...
 }</code></pre>
+<h2 id="goto"><a href="#goto" class="headerlink" title="goto"></a>goto</h2><p> goto label 的用法基本上和C一致</p>
+<pre><code class="go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;os&quot;
+)
+
+func main(){
+    var right int = 1
+    const MAX = 10
+    for ;right &lt; MAX; right++{
+        for left := 1;left &lt;= right;left++{
+            if left == 2{
+                goto out
+            }
+            fmt.Printf(&quot;%d * %d = %d &quot;, left, right, left*right)
+        }
+        fmt.Println()
+    }
+
+    fmt.Printf(&quot;before out.&quot;)
+    out: {
+        fmt.Println(&quot;\nThis is out label.&quot;)
+    }
+    fmt.Println(&quot;after out.&quot;)
+    os.Exit(0)
+}
+---
+输出如下：
+1 * 1 = 1 
+1 * 2 = 2 
+This is out label.
+after out.</code></pre>
+<h2 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h2><p>类似C但是不太一样，没有break；要使用break的特性就得使用fallthrough</p>
+<pre><code class="C">C语言中switch语句：
+switch (整型表达式)
+case 常量1: 语句;break;
+case 常量2：语句;break;
+default: 语句;</code></pre>
+<pre><code class="go">Go语言中switch语句:
+场景1： 常规的用法
+    var num = 10
+    switch num{
+    case 1: 
+        fmt.Println(&quot;it is the first&quot;)
+    case 2: 
+        fmt.Println(&quot;it is the second&quot;)
+    case 3: 
+        fmt.Println(&quot;it is the third.&quot;)
+    default: 
+        fmt.Println(&quot;Did not got it.&quot;)
+    }
+---
+Did not got it.
+
+场景2：    类似C中 case语句没有写break, 会继续往下执行,直到有break也就是直到没有falltrough下落
+    var num = 2
+    switch num{
+    case 1: 
+        fmt.Println(&quot;it is the first&quot;)
+        fallthrough
+    case 2: 
+        fmt.Println(&quot;it is the second&quot;)
+        fallthrough
+    case 3: 
+        fmt.Println(&quot;it is the third.&quot;)
+        fallthrough
+    default: 
+        fmt.Println(&quot;Did not got it.&quot;)
+    }
+---
+it is the second
+it is the third.
+Did not got it.
+
+场景3:    swtich后直接大括号，在case语句做判断
+var num = 2
+    switch {
+    case num &gt; 1: 
+        fmt.Println(&quot;it is the first&quot;)
+    case num &gt; 2: 
+        fmt.Println(&quot;it is the second&quot;)
+    case num &gt; 3: 
+        fmt.Println(&quot;it is the third.&quot;)
+    default: 
+        fmt.Println(&quot;Did not got it.&quot;)
+    }
+---
+it is the first
+
+场景4: 变量在switch语句声明， 作用域仅在switch语句内
+    switch num := 2 ; {
+    case num &gt; 1: 
+        fmt.Println(&quot;it is the first&quot;)
+    case num &gt; 2: 
+        fmt.Println(&quot;it is the second&quot;)
+    case num &gt; 3:
+        fmt.Println(&quot;it is the third.&quot;)
+    default: 
+        fmt.Println(&quot;Did not got it.&quot;)
+    }
+    或者
+    switch num := 2 ; num{
+    case 1: 
+        fmt.Println(&quot;it is the first&quot;)
+    case 2: 
+        fmt.Println(&quot;it is the second&quot;)
+    case 3:
+        fmt.Println(&quot;it is the third.&quot;)
+    default: 
+        fmt.Println(&quot;Did not got it.&quot;)
+    }</code></pre>
 <h1 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h1><p>Go 语言的if语句用法和C完全一致，只是同样条件语句部分不要小括号</p>
 <pre><code>if condition {
     ...
