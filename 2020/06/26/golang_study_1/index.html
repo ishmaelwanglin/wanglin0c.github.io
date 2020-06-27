@@ -325,7 +325,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2020-06-27 11:19:49'>2020-06-26 16:37</time>
+            发布时间 : <time class="date" title='最后更新: 2020-06-27 11:21:50'>2020-06-26 16:37</time>
         
     </div>
     <div class="article-meta">
@@ -465,7 +465,8 @@ strings.LastIndex(字符串，匹配的字符)   从右边开始往左匹配到�
 strings.Index(字符串, 匹配的字符)                从左边开始匹配到的第一个字符的索引值,索引都是从0开始
 strings.Contains(字符串, &quot;匹配的字符&quot;)        字符串中是否包含匹配的字符,返回bool值
 strings.HasPrefix(字符串，“匹配的字符”)    字符串是否以匹配的字符开头，前缀是否是匹配的字符串
-strings.HasSuffix(字符串，“匹配的字符”)    字符串是否以匹配的字符结尾，后缀是否是匹配的字符串</code></pre><h1 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h1><p>Go语言只有 for循环</p>
+strings.HasSuffix(字符串，“匹配的字符”)    字符串是否以匹配的字符结尾，后缀是否是匹配的字符串</code></pre><p>Go语言中字符串都是UTF-8编码， UTF-8中一个常用汉字一般占用3个字节</p>
+<h1 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h1><p>Go语言只有 for循环</p>
 <pre><code class="go">for i := 0; i &lt; 10; i++{
     fmt.println(i)
 }
