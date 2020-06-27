@@ -325,7 +325,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2020-06-27 11:12:43'>2020-06-26 16:37</time>
+            发布时间 : <time class="date" title='最后更新: 2020-06-27 11:19:49'>2020-06-26 16:37</time>
         
     </div>
     <div class="article-meta">
@@ -434,11 +434,13 @@ n7==4 因为n3和n4在同一行const</code></pre>
 <p>int16  类似 short </p>
 <p>int32 类似int </p>
 <p>Int64 类似long</p>
-<p>简短声明n := 10 默认是int类型 (此处int跟系统位数有关32位系统int 是int32, 在64为系统int就是int64)</p>
+<p>简短声明n := 10 默认是int类型</p>
 <p>所以尽量使用int8 int16 int32 int64这样的方式声明整形, 如: n:= int8(10)</p>
 <p>uint8 uint16 uint32 uint64 代表无符号型</p>
 <h3 id="特殊整形"><a href="#特殊整形" class="headerlink" title="特殊整形"></a>特殊整形</h3><p><code>rune</code> :在for index,value range str{ .. } 中，value的数据类型就是rune， 而rune其实就是int32</p>
 <p><code>byte</code> ：其实质就是uint8，即一个字节,8 bites</p>
+<p><code>uint</code>和<code>int</code> 具体是站几个bits看系统位数是32还是64</p>
+<p><code>uintptr</code> ： 指针的地址 </p>
 <h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p>Go语言中默认小数都是float64 </p>
 <p>除非声明为float32</p>
 <h2 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h2><p>true or false</p>
