@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo+Github自建博客 | Wang Lin . OPS</title>
-  <meta name="keywords" content=" hexo ">
-  <meta name="description" content="Hexo+Github自建博客 | Wang Lin . OPS">
+  <title>Golang学习1 | Wang Lin . OPS</title>
+  <meta name="keywords" content=" Go ">
+  <meta name="description" content="Golang学习1 | Wang Lin . OPS">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="欢迎留言评论welcome attach comments">
 <meta property="og:type" content="website">
@@ -298,9 +298,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-blog_hexo" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-golang_study_1" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">Hexo+Github自建博客</h1>
+        <h1 class="article-title">Golang学习1</h1>
     
     <div class="article-meta">
         
@@ -310,7 +310,7 @@
             <i class="iconfont icon-category"></i>
             
             
-            <a  data-rel="其他">其他</a>
+            <a  data-rel="语言学习">语言学习</a>
             
         </span>
         
@@ -318,14 +318,14 @@
         <span class="tag">
             <i class="iconfont icon-tag"></i>
             
-            <a class="color5">hexo</a>
+            <a class="color3">Go</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2020-06-25 12:05:42'>2020-06-25 00:00</time>
+            发布时间 : <time class="date" title='最后更新: 2020-06-27 11:12:43'>2020-06-26 16:37</time>
         
     </div>
     <div class="article-meta">
@@ -347,7 +347,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#概述"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#部署步骤"><span class="toc-text">部署步骤</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#打印"><span class="toc-text">打印</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#fmt-Print-fmt-Printf-fmt-Println的区别"><span class="toc-text">fmt.Print fmt.Printf fmt.Println的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出转换说明修饰符"><span class="toc-text">输出转换说明修饰符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#变量"><span class="toc-text">变量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#变量的声明方式"><span class="toc-text">变量的声明方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#批量声明常量"><span class="toc-text">批量声明常量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iota"><span class="toc-text">iota</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#整形变量"><span class="toc-text">整形变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#特殊整形"><span class="toc-text">特殊整形</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#浮点数"><span class="toc-text">浮点数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#布尔值"><span class="toc-text">布尔值</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#字符串"><span class="toc-text">字符串</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#循环"><span class="toc-text">循环</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#range"><span class="toc-text">range</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#条件判断"><span class="toc-text">条件判断</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#特别注意"><span class="toc-text">特别注意</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#练习题"><span class="toc-text">练习题</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -363,124 +363,276 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><hr>
-<p>本文主要是把自己部署github pages和hexo的过程进行记录，为近期使用此方法部署的同志们提供参考。</p>
-<p>国内由于访问github比较慢，可以用gitee代替github，方法同样适用，但是gitee的由于对我下载的主题支持的不好，所以又改回github。</p>
-<p>环境：</p>
-<blockquote>
-<p>macOS 系统</p>
-<p>本地部署</p>
-<p>Nodejs,hexo,github</p>
-</blockquote>
-<h1 id="部署步骤"><a href="#部署步骤" class="headerlink" title="部署步骤"></a>部署步骤</h1><hr>
-<ol>
-<li><p>下载安装git ， <code>brew install git</code> （brew不会用可以google，或者手动下载安装）</p>
-<p>下载并安装nodejs: <a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener" title="nodejs_LTS">nodejs下载</a>，下载完是个pkg，直接安装即可，如图：</p>
-<img src="/2020/06/25/blog_hexo/hexo_01.png" class="" title="node_js">
+        <h1 id="打印"><a href="#打印" class="headerlink" title="打印"></a>打印</h1><h2 id="fmt-Print-fmt-Printf-fmt-Println的区别"><a href="#fmt-Print-fmt-Printf-fmt-Println的区别" class="headerlink" title="fmt.Print fmt.Printf fmt.Println的区别"></a>fmt.Print fmt.Printf fmt.Println的区别</h2><pre><code>Print(strValue) 打印后边不会换行
+Printf(&quot;&quot;) 完全类似C语言的printf
+Println(strValue) 类似java，print的同时后边打印换行符.
+Go语言输出printf的时候不能把代码写成多行.</code></pre><h2 id="输出转换说明修饰符"><a href="#输出转换说明修饰符" class="headerlink" title="输出转换说明修饰符"></a>输出转换说明修饰符</h2><p>%v 可以输出一切类型的数值，</p>
+<p>%T 可以显示数据类型，</p>
+<p>%b 表示二进制</p>
+<p>其他和c语言大致相同</p>
+<p>单引号字符的数据类型是int32 ,所以在print和println的时候输出都是数字，只能在printf时使用<code>%c</code>来输出字符</p>
+<p>反引号之间的字符串可以原样输出，不需转义。</p>
+<pre><code>str1 :=`
+        when i was young
+        i just going to radio
+        gone
+    `
+    fmt.Println(str1)
 
-<blockquote>
-<ul>
-<li><em>node.js</em>其官方网站开始<a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">https://nodejs.org/zh-cn/</a></li>
-<li><em>Git</em>官方网站开始<a href="https://git-scm.com/" target="_blank" rel="noopener">https://git-scm.com/</a></li>
-</ul>
+    --------------------
+            when i was young
+        i just going to radio
+        gone
+</code></pre><h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><p>全局变量声明后可以不被使用</p>
+<p>局部的变量必须被使用，否则编译报错</p>
+<h2 id="变量的声明方式"><a href="#变量的声明方式" class="headerlink" title="变量的声明方式"></a>变量的声明方式</h2><pre><code class="go">var keyName type
+// 批量声明变量
+var (
+    name string
+    age int
+    isOk bool
+)
+
+// 变量推导: 根据变量的值推导出类型
+var keyName = value
+// 简短变量的定义，只能在函数里使用
+keyName := value
+
+// 匿名变量： 即一个下划线`_`，类似python，该变量接收返回值，但不使用。匿名变量不占用命名空间和不分配内存。</code></pre>
+<h2 id="批量声明常量"><a href="#批量声明常量" class="headerlink" title="批量声明常量"></a>批量声明常量</h2><pre><code>const (
+    n1 = 100
+    n2 
+    n3
+)</code></pre><blockquote>
+<p>下边n2 n3没有赋值就是说 n2 n3都和n1一样 == 100</p>
 </blockquote>
+<h2 id="iota"><a href="#iota" class="headerlink" title="iota"></a>iota</h2><p>只能在定义常量时使用，变量不能用</p>
+<p>const出现的时候iota被重置为0， 在最近的一个const 处恢复赋值0</p>
+<p>每新增一行const的声明iota加1.</p>
+<pre><code class="go">const (
+  _ = iota    //舍弃 iota == 0
+  KB = 1 &lt;&lt; (10 * iota) // iota == 1
+  MB                                        // iota == 2
+  GB
+  TB
+  PB
+  YB
+)
+下边的值不写赋值，说明是和上边的一致
+
+const (
+  _ = iota
+  n1 = 16
+  n2 = iota
+  n3,n4
+  n7
+)
+此时n2 == 2 ，n1 行虽然显式赋值， 但是此时iota已然自增
+n3和n4在同一行赋值，所以此时n3和n4 都等于 3
+n7==4 因为n3和n4在同一行const</code></pre>
+<h2 id="整形变量"><a href="#整形变量" class="headerlink" title="整形变量"></a>整形变量</h2><p>int8 类似char  </p>
+<p>int16  类似 short </p>
+<p>int32 类似int </p>
+<p>Int64 类似long</p>
+<p>简短声明n := 10 默认是int类型 (此处int跟系统位数有关32位系统int 是int32, 在64为系统int就是int64)</p>
+<p>所以尽量使用int8 int16 int32 int64这样的方式声明整形, 如: n:= int8(10)</p>
+<p>uint8 uint16 uint32 uint64 代表无符号型</p>
+<h3 id="特殊整形"><a href="#特殊整形" class="headerlink" title="特殊整形"></a>特殊整形</h3><p><code>rune</code> :在for index,value range str{ .. } 中，value的数据类型就是rune， 而rune其实就是int32</p>
+<p><code>byte</code> ：其实质就是uint8，即一个字节,8 bites</p>
+<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p>Go语言中默认小数都是float64 </p>
+<p>除非声明为float32</p>
+<h2 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h2><p>true or false</p>
+<p>不能和整数进行转换，也就是说不能直接用1和0代替</p>
+<h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><pre><code class="go">s1 := &quot;hello world&quot;     //双引号代表字符串类似C语言 , 字符串有\0作为结束符， 单引号是字符
+
+s2 := `                //反引号是多行的字符串，并且输出的时候格式不变
+
+​    hello 
+
+​    world
+
+​    i am from tianjin of china
+
+`
+</code></pre>
+<p>切片s2 :=  []rune(s1) ，切片之后就可以是否for 循环， 循环数组一样 输出每个字符</p>
+<p>使用包strings</p>
+<pre><code>import &quot;strings&quot;
+strings.Join(数组|切片,连接符)         连接成一个字符串
+strings.LastIndex(字符串，匹配的字符)   从右边开始往左匹配到的第一个字符，但是显示的索引值是从左开始数的
+strings.Index(字符串, 匹配的字符)                从左边开始匹配到的第一个字符的索引值,索引都是从0开始
+strings.Contains(字符串, &quot;匹配的字符&quot;)        字符串中是否包含匹配的字符,返回bool值
+strings.HasPrefix(字符串，“匹配的字符”)    字符串是否以匹配的字符开头，前缀是否是匹配的字符串
+strings.HasSuffix(字符串，“匹配的字符”)    字符串是否以匹配的字符结尾，后缀是否是匹配的字符串</code></pre><h1 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h1><p>Go语言只有 for循环</p>
+<pre><code class="go">for i := 0; i &lt; 10; i++{
+    fmt.println(i)
+}
+
+for {      //这样的是死循环
+    ....
+    break
+}
+
+用法与C类似只是条件语言不要小括号</code></pre>
+<h2 id="range"><a href="#range" class="headerlink" title="range"></a>range</h2><p>字符串，数组可以使用range进行切片访问</p>
+<pre><code class="go">str = &quot;hello Go语言&quot;
+var (
+  index int
+  value rune
+)
+for index=range str{    // 只循环索引
+    ...
+}
+for _,value=range str{    //丢弃索引
+    ...
+}
+for index,value=range str{ 
+  ...
+}
+for index,value := range str{    //两个值都在for语言定义，作用域只在语句之后的大括号内，即函数作用域
+  ...
+}</code></pre>
+<h1 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h1><p>Go 语言的if语句用法和C完全一致，只是同样条件语句部分不要小括号</p>
+<pre><code>if condition {
+    ...
+}
+else if condition {
+    ...
+}
+else {
+    ...
+}</code></pre><h1 id="特别注意"><a href="#特别注意" class="headerlink" title="特别注意"></a>特别注意</h1><ul>
+<li>所有的语句大括号都得在语句后，连接着写不能换行重写类似ansi C的</li>
+</ul>
+<pre><code>func main(){
+    ...
+}
+if condition{
+    ...
+}
+for {
+    ...
+}
+大括号不能换行
+</code></pre><ul>
+<li>同样小括号里的语句也不能换行</li>
+</ul>
+<pre><code>fmt.Printf( ... , ,,,)
+小括号里的内容不能换行</code></pre><ul>
+<li>各类索引值从0开始</li>
+</ul>
+<ul>
+<li><p>func main(){} 不能带返回值，且没有参数，否则编译报错</p>
+<p>如果要知道退出值是否正常，使用os.Exit(0)</p>
+</li>
+</ul>
+<pre><code>import &quot;os&quot;
+func main(){
+    os.Exit(0)
+}</code></pre><ul>
+<li><p>! Go语言函数外的变量必须以关键字开头</p>
+</li>
+<li><p>注释方法和C99一致 // 单行， /* … */ 多行</p>
+</li>
+</ul>
+<h2 id="练习题"><a href="#练习题" class="headerlink" title="练习题"></a>练习题</h2><ol>
+<li><p>常量声明及练习题，特别是iota定义数量级时(1024)</p>
+<pre><code class="go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;os&quot;
+)
+
+const (
+    _ = iota
+    kB = 1 &lt;&lt; ( 10 * iota)
+    mB
+    gB
+    tB
+)
+func main(){
+    fmt.Printf(&quot;KB is %d,\nMB is %d,\nGB is %d,\nTB is %d\n&quot;,kB, mB, gB, tB)
+    os.Exit(0)
+}</code></pre>
 </li>
 </ol>
 <ol start="2">
-<li><p>安装npm，通过npm部署hexo</p>
-<pre><code>brew install npm
-修改阿里的npm源: npm config set registry https://registry.npm.taobao.org
-查看npm源是否修改成功： npm config get    </code></pre></li>
-<li><p>创建一个本地blog项目的文件夹: myblog_web</p>
-</li>
-<li><p>再安装hexo,执行 <code>npm install hexo-cli -g</code></p>
-<blockquote>
-<p>Note:</p>
-<p>或者安装完整的Hexo <code>npm install hexo</code></p>
-<p>Linux的话需要把node_modules目录加入到环境变量</p>
-<p><code>echo &#39;PATH=&quot;$PATH:./node_modules/.bin&quot;&#39; &gt;&gt; ~/.profile</code></p>
-<p>这部分来自hexo项目<a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">hexo官网</a>的说明</p>
-</blockquote>
-</li>
-</ol>
-<ol start="5">
-<li><p>初始化hexo项目，进到myblog_web目录，执行<code>hexo init</code>或者<code>hexo init path/myblog_web</code>，然后等着自动从git上拉取项目到本地。</p>
-<p>项目拉取完成之后可以通过<code>npm fund</code> 查看项目的依赖信息</p>
-<pre><code>➜  myblog_web npm fund
-hexo-site@0.0.0
-├─┬ https://opencollective.com/hexo
-│ └── hexo@4.2.1
-├─┬ https://github.com/sponsors/ljharb
-│ └── resolve@1.17.0
-├─┬ https://github.com/chalk/ansi-styles?sponsor=1
-│ └── ansi-styles@4.2.1
-├─┬ https://github.com/sponsors/jonschlinkert
-│ └── picomatch@2.2.2
-└─┬ https://github.com/sponsors/isaacs
-  └── glob@7.1.6</code></pre></li>
-<li><p>生成静态页面，执行<code>hexo g 或者 hexo generate</code>生成网站(每更新一次都要重新生成静态页面)，生成的页面在myblog_web/public文件夹</p>
-<pre><code>➜  myblog_web hexo g
-INFO  Start processing
-INFO  Files loaded in 105 ms
-INFO  Generated: index.html
-...
-INFO  Generated: 2020/06/24/hello-world/index.html
-INFO  28 files generated in 295 ms</code></pre></li>
-<li><p>执行<code>hexo s -p 8080</code> 启动本地服务，即可通过本地<a href="http://localhost:8080访问页面">http://localhost:8080访问页面</a>.</p>
-<blockquote>
-<p>Note:</p>
-<p>不指定端口的话就是默认端口4000</p>
-<p>加–debug 可以在屏幕显示调试日志</p>
-</blockquote>
-</li>
-<li><p>下载一个自己喜欢的主题，可以从hexo官网下载: <a href="https://hexo.io/themes/" target="_blank" rel="noopener">https://hexo.io/themes/</a> ，调整好主题的配置，比如我选择的是<code>https://yelog.org/</code>的，对应的主题都有相关配置说明。</p>
-</li>
-<li><p>在github上 创建一个仓库，仓库名保持和uername一致的<strong>username.github.io</strong> ，如图</p>
-<img src="/2020/06/25/blog_hexo/image-20200625115256458.png" class="" title="create_repository">
-</li>
-<li><p>发布到github需要修改_config.yml, 在最下边deploy处修改内容如下：</p>
-<pre><code># Deployment
-## Docs: https://hexo.io/docs/deployment.html
-deploy:
- type: git
- repo: https://github.com/wanglin0c/wanglin0c.github.io.git #仓库的https地址
- branch: master
-# gitpage只能使用master分支</code></pre></li>
-</ol>
-<ol start="11">
-<li><p>cd到myblog_web路径下，删除旧的静态文件并生成新的静态文件，并发布,然后会要求输入github的用户密码，然后上传完成。</p>
-<blockquote>
-<pre><code>安装插件：
-npm install hexo-deployer-git --save 安装该插件可以使每次push到origin remote的时候用--force的方式强制更新。
-发布命令: 
-hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy   
-# 后两个命令可以简写成 hexo g &amp;&amp; hexo d</code></pre></blockquote>
-<p>​    </p>
-</li>
-</ol>
-<ol start="13">
-<li><p>添加博客文章，在source/_posts目录下添加markdown文件，需要注意的是每篇markdown文档的开头需要添加开头部分内容（可选，页面目录生成使用）：</p>
-<pre><code>---
-title: 文档名称
-date: 日期
-tags: 标签
-categories: 类别
----</code></pre></li>
-</ol>
-<ol start="16">
-<li>使用typora编辑MD文档时添加图片的方法： <blockquote>
-<ul>
-<li>配置typora的图像设置部分，偏好设置&gt;图像，选择复制到指定路径，并勾选”优先使用相对路径”，这样在粘贴图片到文档上的时候，就会在文档所在目录创建一个同名的目录存放该文档上的图片，并且图片的路径显示为该文件夹的相对路径，如“blog_hexo/xxxxx.png”，此时typora就可以显示该相对路径的图片，如图：</li>
-</ul>
-<img src="/2020/06/25/blog_hexo/image-20200625100207147.png" class="">
+<li><p>编写代码分别定义一个整形、浮点型、布尔型、字符串型变量，使用fmt.Printf()搭配%T分别打印出上述变量的值和类型.</p>
+<pre><code class="go">package main
 
-<ul>
-<li><p>修改hexo配置，如我的项目myblog_web目录下的配置文件_config.yml, 修改post_asset_folder的值为true，即使用相对路径。</p>
-<pre><code>post_asset_folder: true</code></pre></li>
-<li><p>本地安装插件， 执行命令<code>npm install hexo-image-link --save</code> 解决typora图片路径问题，本地预览的时候就可以看到图片了。</p>
+import(
+    &quot;fmt&quot;
+    &quot;os&quot;
+)
+
+func main(){
+    var (
+        iNum int32
+        fNum float32
+        bBol bool
+        sStr string
+    )
+    fmt.Printf(&quot;iNum type is %T,\nfNum type is %T,\nbBol type is %T,\nsStr type is %T\n&quot;, iNum, fNum, bBol, sStr)
+    fmt.Printf(&quot;iNum value is %v,\nfNum value is %v,\nbBol value is %v,\nsStr value is %v\n&quot;, iNum, fNum, bBol, sStr)
+    os.Exit(0)
+}
+---
+未初始化的数值类为0，bool值是false,字符串为&quot;\0&quot;即空字符串，\0为非打印字符，字符结束(C语言)</code></pre>
 </li>
-</ul>
-</blockquote>
+</ol>
+<ol start="3">
+<li><p>编写代码统计出字符串”hello沙河小王子”中汉子的数量 (一个汉字站三个字节即三个索引)</p>
+<pre><code class="go">package main
+
+import(
+    &quot;fmt&quot;
+    &quot;os&quot;
+)
+
+func main(){
+    const str1 = &quot;hello world天津滨海&quot;
+    const suff = &quot;d&quot;                                                //因为循环不会越界，所以最后一次循环的索引不会被拿来    
+    var str2 = str1 + suff                                    //行减法计算，所以在字符串最后拼接一个占用一个字节的字
+    var (                                                                        //符串，就可以对最后一个汉字索引进行计算了
+        iHanzi int
+        index int
+        lastIndex int
+    )
+    const DVALUE  = 3
+    for index = range str2{
+        if index-lastIndex == DVALUE{
+            iHanzi++
+        }
+        lastIndex = index
+    }
+
+    fmt.Printf(&quot;str1 has Hanzi count %d nums.\n&quot;, iHanzi)
+
+    os.Exit(0)
+}</code></pre>
+</li>
+</ol>
+<ol start="4">
+<li><p>打印九九乘法表</p>
+<pre><code class="go">package main
+
+import (
+    &quot;fmt&quot;
+    &quot;os&quot;
+)
+
+func main(){
+    var right = 1
+    const MAX = 10
+    for ;right &lt; MAX; right++{
+        for left := 1;left &lt;= right;left++{
+            fmt.Printf(&quot;%d * %d = %d &quot;, left, right, left*right)
+        }
+        fmt.Println()
+    }
+    os.Exit(0)
+}</code></pre>
 </li>
 </ol>
 
