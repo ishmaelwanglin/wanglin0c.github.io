@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Ceph Hammer版(0.94.10)手动部署for CentOS 7.x | Wang Lin . OPS</title>
-  <meta name="keywords" content=" ceph ">
-  <meta name="description" content="Ceph Hammer版(0.94.10)手动部署for CentOS 7.x | Wang Lin . OPS">
+  <title>Golang学习2 | Wang Lin . OPS</title>
+  <meta name="keywords" content=" Go ">
+  <meta name="description" content="Golang学习2 | Wang Lin . OPS">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="欢迎留言评论welcome attach comments">
 <meta property="og:type" content="website">
@@ -306,9 +306,9 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-H版部署(0.94.10)" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-golang_study_2" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">Ceph Hammer版(0.94.10)手动部署for CentOS 7.x</h1>
+        <h1 class="article-title">Golang学习2</h1>
     
     <div class="article-meta">
         
@@ -318,7 +318,7 @@
             <i class="iconfont icon-category"></i>
             
             
-            <a  data-rel="存储">存储</a>
+            <a  data-rel="语言学习">语言学习</a>
             
         </span>
         
@@ -326,14 +326,14 @@
         <span class="tag">
             <i class="iconfont icon-tag"></i>
             
-            <a class="color5">ceph</a>
+            <a class="color3">Go</a>
             
         </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2020-06-25 12:10:05'>2020-06-24 00:00</time>
+            发布时间 : <time class="date" title='最后更新: 2020-06-30 00:01:11'>2020-06-27 12:17</time>
         
     </div>
     <div class="article-meta">
@@ -355,7 +355,7 @@
     
     <div class="toc-ref">
     
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#自增自减"><span class="toc-text">自增自减</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数组和切片"><span class="toc-text">数组和切片</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数组"><span class="toc-text">数组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#声明"><span class="toc-text">声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多维数据的初始化"><span class="toc-text">多维数据的初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组遍历"><span class="toc-text">数组遍历</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#切片"><span class="toc-text">切片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#切片的声明"><span class="toc-text">切片的声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通过数组创建切片"><span class="toc-text">通过数组创建切片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#make创建切片"><span class="toc-text">make创建切片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#切片遍历"><span class="toc-text">切片遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#append"><span class="toc-text">append</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#copy"><span class="toc-text">copy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#切片元素的删除"><span class="toc-text">切片元素的删除</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#指针和内存分配"><span class="toc-text">指针和内存分配</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Map"><span class="toc-text">Map</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#元素存在map中"><span class="toc-text">元素存在map中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#遍历map"><span class="toc-text">遍历map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除元素"><span class="toc-text">删除元素</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#函数"><span class="toc-text">函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注意事项"><span class="toc-text">注意事项</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -371,179 +371,204 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p align="right">--lin.wang 20190310</p>
+        <h1 id="自增自减"><a href="#自增自减" class="headerlink" title="自增自减"></a>自增自减</h1><p>Go语言中 自增自减 （++ 和 – )</p>
+<p>不能赋值 不能求值</p>
+<p>不能++i 只能i ++ </p>
+<p>且 i++是不不能求值的 </p>
+<p>因为不是表达式只是语句， 不能x = i++；</p>
+<h1 id="数组和切片"><a href="#数组和切片" class="headerlink" title="数组和切片"></a>数组和切片</h1><h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>数组是值类型</p>
+<p>可以互相赋值，赋值即复制内存，并非指针指向内存(C语言不允许)</p>
+<p>数组得有元素个数 未知是…</p>
+<p>切片不标明元素个数[]</p>
+<h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><pre><code>var arr [num]type
 
-<p>环境有三个节点node-1,node-2,node-3，每个节点三个ssd盘作为osd</p>
-<p>1、添加yum源ceph、base、epel</p>
-<p>2、所有节点添加互信如：root用户，及hosts(/etc/hosts)列表</p>
-<p>3、/etc/ssh/ssh_config中: #   StrictHostKeyChecking ask　注释去掉值改成no</p>
-<p>4、关闭firewalld、selinux，或者开放相应端口: mon 6789、osd 6800-8100</p>
-<p>5、配置时钟同步ntp</p>
-<p>6、每个节点安装ceph包,yum install ceph -y</p>
-<hr>
-<p><em>mon部署,7-10在node-1执行</em></p>
-<p>7、uuidgen生一个uuid,用作fsid</p>
-<p>8、切换到/etc/ceph目录下，创建ceph.conf，编写配置文件，如下</p>
-<pre><code>[global]
-fsid = 4f41a244-032c-4d85-b3ff-7cefb2d1ed16
-mon_initial_members = node-1,node-2,node-3
-mon_host = 192.168.122.94,192.168.122.95,192.168.122.96
-public_network = 192.168.122.0/24
-cluster_network = 192.168.201.0/24
-auth_cluster_required = cephx
-auth_service_required = cephx
-auth_client_required = cephx
-osd_journal_size = 1024
-filestore_xattr_use_omap = true
-osd_pool_default_size = 3 # Write an object n times.
-osd_pool_default_min_size = 1 # Allow writing n copy in a degraded state.
-osd_pool_default_pg_num = 128
-osd_pool_default_pgp_num = 128
-osd_crush_chooseleaf_type = 1</code></pre><p>9、</p>
-<p>创建monitor的key用于多个monitor间通信，保存在<code>/tmp/ceph.mon.keyring</code></p>
-<p><code>ceph-authtool --create-keyring /tmp/ceph.mon.keyring --gen-key -n mon. --cap mon &#39;allow *&#39;</code></p>
-<p>生成管理用户<code>client.admin</code>及其key，保存在<code>/etc/ceph/ceph.client.admin.keyring</code></p>
-<pre><code>ceph-authtool --create-keyring /etc/ceph/ceph.client.admin.keyring --gen-key -n client.admin --set-uid=0 --cap mon &#39;allow *&#39; --cap osd &#39;allow *&#39; --cap mds &#39;allow&#39;
-#key文件命令规则:{cluster name}-{user-name}.keyring</code></pre><p>添加<code>client.admin</code>的key到<code>ceph.mon.keyring</code>文件</p>
-<pre><code>ceph-authtool /tmp/ceph.mon.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring</code></pre><p>10、创建monitor map</p>
-<pre><code>#默认的monitor port是6789
-monmaptool --create --add node-1 192.168.122.94 --add node-2 192.168.122.95 --add node-3 192.168.122.96 --fsid 4f41a244-032c-4d85-b3ff-7cefb2d1ed16 /tmp/monmap</code></pre><p>monmaptool –print /tmp/monmap可以查看生成的monmap</p>
-<p>ceph auth get mon. 可以获取monmap</p>
+var arr [...]type
+
+ var arr[5]int
+
+var arr[...]int</code></pre><h3 id="多维数据的初始化"><a href="#多维数据的初始化" class="headerlink" title="多维数据的初始化"></a>多维数据的初始化</h3><pre><code class="go">var arr1 = [3][2]int{ {1,3}, {2,4}, {5,6} }
+var arr2 = [3][2]int{
+    [2]int{1,3},
+    [2]int{2,4},
+    [3]int{5,6},     //这样方式的初始化，最后一个元素也要加逗号
+}</code></pre>
+<h3 id="数组遍历"><a href="#数组遍历" class="headerlink" title="数组遍历"></a>数组遍历</h3><p>数组遍历的时候for range 返回索引和值</p>
+<pre><code>a4 := [...]int{1:2,4:2}
+    for i,v:=range a4{
+        fmt.Println(i,v)
+    }</code></pre><h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p>切片是引用型，</p>
+<p>类似C的数组</p>
+<p><strong>通过切片可以通过索引修改内存数据，arr[n] = xxx ,此时arr[n]指向的数值已经修改，引用改内存数据的切片的值都发生了变化。</strong></p>
+<pre><code class="go">arr := []int{1,2,3}
+arr[0] = 10
+此时arr 已经变成[10, 2, 3]</code></pre>
+<h3 id="切片的声明"><a href="#切片的声明" class="headerlink" title="切片的声明"></a>切片的声明</h3><p>类似数组但是[]中括号内没有长度</p>
+<p>var arr = []int{1,2,3}</p>
+<h3 id="通过数组创建切片"><a href="#通过数组创建切片" class="headerlink" title="通过数组创建切片"></a>通过数组创建切片</h3><pre><code class="go">数组： var a1 = [...]int{1,2,3,4,5,6,7,8,9}
+切片:  var s1 = a1[:] //此时s1就成为了一个切片， 还可以再切片的基础上再次切片，方法类似python list
+            //但是此时s1并不是内存地址而是切片类型
+            a1[1:]
+            a1[2:5]
+            a1[:4]</code></pre>
+<h3 id="make创建切片"><a href="#make创建切片" class="headerlink" title="make创建切片"></a>make创建切片</h3><p><code>var val = make([]type, len, cap)</code></p>
+<p>举例：</p>
+<pre><code class="go">var a2 = make([]int, 5, 10) //创建一个长度为5的，容量为10的切片，即开辟一块10个int长度的内存，把地址交给a2，然后对a2解引用， 打印a2 就是解引用之后的切片的值.  如果声明时省略了cap则默认cap和len一样
+此时打印a2的值是[ 0 0 0 0 0 ] 即5个0</code></pre>
+<p>make创建的切片即使没有初始化，内存长度为0也不为nil， 而如果只声明了一个切片类型的变量而没有初始化，则该变量等于nil.</p>
+<pre><code class="go">var val []int  // val == nil
+var val = make([]int, 0, 0)  // val != nil 
+var val = []int{}   // val != nil，此时切片是长度0容量0的地址，非nil</code></pre>
+<h3 id="切片遍历"><a href="#切片遍历" class="headerlink" title="切片遍历"></a>切片遍历</h3><p>和数组遍历相同</p>
+<h3 id="append"><a href="#append" class="headerlink" title="append"></a>append</h3><pre><code class="go">arr1 := []int{1,3,5}
+arr1 = append(arr1, 7)
+arr2 := []int{9,11}
+arr1 = append(arr1, arr2...) //解引用arr2 
+append之后 的cap增长，1024之前是翻倍， 1024之后是1/4，
+append之后的内存地址是新申请的， 与c的realloc 不一样。</code></pre>
+<h3 id="copy"><a href="#copy" class="headerlink" title="copy"></a>copy</h3><pre><code class="go">copy(dest, src) 
+copy切片 其实是把内存页复制了一份， 也就是复制的是值，不是地址</code></pre>
+<h3 id="切片元素的删除"><a href="#切片元素的删除" class="headerlink" title="切片元素的删除"></a>切片元素的删除</h3><p>切片的元素通过append将指向的值copy到目标地址，然后将地址重新指向到目标地址</p>
+<pre><code class="go"> 删除了第二个元素即下标是1的值    
+a3 := []int{1,2,3,4,5}
+a4 := a3
+a4 = append(a4[:1], a4[2:]...)   
+fmt.Println(a4)
+fmt.Println(a3)
+---
+[1 3 4 5]
+[1 3 4 5 5]
+
+类似如下操作： 
+copy(a4[1:],a4[2:])  // 把目标元素后边的所有值copy到目标元素开始的位置
+a4 = a4[:len(a4)-1]  // 对a4再切片， 从最后切掉要删除的个数1
+</code></pre>
+<h1 id="指针和内存分配"><a href="#指针和内存分配" class="headerlink" title="指针和内存分配"></a>指针和内存分配</h1><p>Go语言不能进行指针运算，只能查找赋值，但是写法比较反人类</p>
+<p>取地址和解引用 </p>
+<pre><code class="go">var ptr * int = new(int) //go
+int * a  = (int *) malloc(sizeof(int)) // c
+</code></pre>
+<pre><code class="go">make()是给slice,map,chan申请内存，返回值本身（或者说返回值后，使用的时候会被go解引用）
+
+new()给基本上的数据类型申请内存，返回内存地址，类似malloc()，但是会初始化赋值0，在go中很少用到</code></pre>
+<h1 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h1><p>Go中是引用类型</p>
+<p>类似python的dict</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><pre><code class="go">var m1 map[string]int // [key type]value type
+
+初始化:
+m1 := map[string]int{}
+var m1 = map[string]int{}
+
+var m1 = make(map[string]int, 10, 10)</code></pre>
+<h2 id="元素存在map中"><a href="#元素存在map中" class="headerlink" title="元素存在map中"></a>元素存在map中</h2><pre><code class="go">value, ok := m2[&quot;alice&quot;]
+
+如果该key不存在则ok的值是false，值value就是0;
+如果存在value就是key的value。</code></pre>
+<h2 id="遍历map"><a href="#遍历map" class="headerlink" title="遍历map"></a>遍历map</h2><pre><code class="go">for k,v := range m1{
+    ...
+}
+for k := range m1{
+   m1[k] //即value 
+}</code></pre>
+<h2 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h2><pre><code class="go">delete(map1, key)</code></pre>
 <blockquote>
-<p>可以停止mon服务后使用如下方法导出monmap</p>
-<p>ceph-mon -i hostname –extract-monmap /tmp/monmap 从当前节点的/var/lib/ceph/mon/​hostname​ 导出monmap</p>
-<p>注入monmap</p>
-<p>停止所有节点mon服务</p>
-<p>ceph-mon -i mon-id –inject-monmap /tmp/monmap</p>
-<p>启动mon服务</p>
+<p> 如果删除不存在的元素，则不作操作</p>
 </blockquote>
-<p>11、在每个mon节点上分别创建mon的目录</p>
-<p><code>sudo mkdir /var/lib/ceph/mon/{cluster-name}-{hostname}</code></p>
-<p>​    node-1&gt; mkdir /var/lib/ceph/mon/ceph-node-1</p>
-<p>​    node-2&gt; mkdir /var/lib/ceph/mon/ceph-node-2</p>
-<p>​    node-3&gt; mkdir /var/lib/ceph/mon/ceph-node-3</p>
-<p>12、初始化monitor</p>
-<p>将node-1的</p>
-<blockquote>
-<p>/tmp/monmoap、/tmp/ceph.mon.keyring、/etc/ceph/ceph.conf、/etc/ceph/ceph.client.admin.keyring</p>
-<p>部署完毕后，/tmp下的这两个文件可以删除</p>
-</blockquote>
-<p>复制到node-2和node-3的对应目录</p>
-<p><code>ceph-mon [--cluster {cluster-name}] --mkfs -i {hostname} --monmap /tmp/monmap --keyring /tmp/ceph.mon.keyring</code></p>
-<p>node-1&gt; ceph-mon –mkfs -i node-1 –monmap /tmp/monmap –keyring /tmp/ceph.mon.keyring</p>
-<p>node-2&gt; ceph-mon –mkfs -i node-2 –monmap /tmp/monmap –keyring /tmp/ceph.mon.keyring</p>
-<p>node-3&gt; ceph-mon –mkfs -i node-3 –monmap /tmp/monmap –keyring /tmp/ceph.mon.keyring</p>
-<p>此时在每个节点/var/lib/ceph/mon/{cluster}-{hostname}目录下生成了store.db和keyring</p>
-<p>13、 在每个节点的mon目录下，创建两个文件：</p>
-<p>/var/lib/ceph/mon/{cluster}-{hostname}/{done,sysvinit}</p>
-<p>​    node-1&gt; touch /var/lib/ceph/mon/ceph-node-1/{done,sysvinit}</p>
-<p>​    node-2&gt; touch /var/lib/ceph/mon/ceph-node-2/{done,sysvinit}</p>
-<p>​    node-3&gt; touch /var/lib/ceph/mon/ceph-node-3/{done,sysvinit}</p>
-<blockquote>
-<p>其中done文件表示monitor已经创建完成，可以启动使用了。</p>
-<p>缺少sysvinit会报错。</p>
-<p>老版本要求创建upstart已自动启动，当前版本创建后会起不来。</p>
-</blockquote>
-<p>14、启动monitor服务: 每个mon节点，/etc/init.d/ceph start mon</p>
-<p>15、开机自启动，chkconfig ceph on</p>
-<hr>
-<p>osd部署</p>
-<p>16、创建osd id<code>ceph osd create</code></p>
-<p>本次有９个osd，因此创建9个即0-8: <code>for i in $(seq 0 8) ;do ceph osd create;done</code></p>
-<blockquote>
-<p>新版本支持指定osd id，当前版本不支持</p>
-<p>创建完成后，可以通过ceph osd tree看到所有osd处于down和没有crush weight的状态</p>
-<p>[root@ceph-1 ~]# ceph osd tree<br>ID WEIGHT TYPE NAME    UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1      0 root default<br> 0      0 osd.0           down        0          1.00000<br> 1      0 osd.1           down        0          1.00000<br> 2      0 osd.2           down        0          1.00000<br> 3      0 osd.3           down        0          1.00000<br> 4      0 osd.4           down        0          1.00000<br> 5      0 osd.5           down        0          1.00000<br> 6      0 osd.6           down        0          1.00000<br> 7      0 osd.7           down        0          1.00000<br> 8      0 osd.8           down        0          1.00000</p>
-</blockquote>
-<p>17、在每个节点创建osd的目录,<code>mkdir /var/lib/ceph/osd/{cluster-name}-{osd-number}</code></p>
-<p>​    node-1&gt; mkdir /var/lib/ceph/osd/ceph-{0..2}</p>
-<p>​    node-2&gt; mkdir /var/lib/ceph/osd/ceph-{3..5}</p>
-<p>​    node-3&gt; mkdir /var/lib/ceph/osd/ceph-{6..8}</p>
-<p>18、将所有osd磁盘分区并挂载</p>
-<p><code>parted -s /dev/vdb mklabel gpt mkpart primary 2048s 100%</code></p>
-<p><code>mkfs.xfs /dev/vdb1</code></p>
-<pre><code>[root@ceph-1 osd]# df -h
-Filesystem               Size  Used Avail Use% Mounted on
-/dev/mapper/centos-root  7.1G  1.2G  6.0G  16% /
-devtmpfs                 2.0G     0  2.0G   0% /dev
-tmpfs                    2.0G     0  2.0G   0% /dev/shm
-tmpfs                    2.0G  8.5M  2.0G   1% /run
-tmpfs                    2.0G     0  2.0G   0% /sys/fs/cgroup
-/dev/vda1               1014M  125M  890M  13% /boot
-tmpfs                    396M     0  396M   0% /run/user/0
-/dev/vdb1                 10G   33M   10G   1% /var/lib/ceph/osd/ceph-0
-/dev/vdc1                 10G   33M   10G   1% /var/lib/ceph/osd/ceph-1
-/dev/vdd1                 10G   33M   10G   1% /var/lib/ceph/osd/ceph-2</code></pre><p>19、各osd节点初始化osd目录</p>
-<p><code>ceph-osd -i {osd-num} --mkfs --mkkey --osd-uuid [{uuid}]</code></p>
-<p>ceph-osd -i 0 –mkfs –mkkey </p>
-<blockquote>
-<p>加 <code>--mkkey</code> 选项运行 <code>ceph-osd</code> 之前，此目录必须是空的；另外，如果集群名字不是默认值，还要给 <code>ceph-osd</code> 指定 <code>--cluster</code> 选项。</p>
-</blockquote>
-<p>20、注册osd的keyring.</p>
-<p><code>ceph auth add osd.{osd-num} osd &#39;allow *&#39; mon &#39;allow profile osd&#39; -i /var/lib/ceph/osd/{cluster-name}-{osd-num}/keyring</code></p>
-<p>ceph auth add osd.0 osd ‘allow *’ mon ‘allow profile osd’ -i /var/lib/ceph/osd/ceph-0/keyring</p>
-<blockquote>
-<p>路径内 <code>ceph-{osd-num}</code> 里的 <code>ceph</code> 其含义为 <code>$cluster-$id</code> ，如果你的集群名字不是 <code>ceph</code> ，请指定自己的集群名</p>
-<p>对于恢复已有的keyring,可以使用ceph auth import -i osd_path/keyring并auth caps赋权:ceph auth caps osd.0 osd ‘allow *’ mon ‘allow profile osd’</p>
-</blockquote>
-<p>21、将节点加入到crush map，并放置在default根root下。</p>
-<p><code>ceph [--cluster {cluster-name}] osd crush add-bucket {hostname} host</code></p>
-<p>ceph osd crush add-bucket node-1 host </p>
-<p>ceph osd crush move node-1 root=default</p>
-<blockquote>
-<p>move到root下前后crush 对比</p>
-<p>之前</p>
-<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT TYPE NAME    UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-2      0 host node-1<br>-1      0 root default                                   </p>
-<p>之后</p>
-<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1      0 root default<br>-2      0     host node-1   </p>
-<p>crush中没有删除bucket的命令，只能导出crushmap修改</p>
-<p>先mkkey才能mova osd 到bucket下，否则mkkey会报错</p>
-</blockquote>
-<p>22、在crushmap把osd添加到host下：</p>
-<p><code>ceph [--cluster {cluster-name}] osd crush add {id-or-name} {weight} [{bucket-type}={bucket-name} ...]</code></p>
-<p>ceph osd crush add osd.0 1.0 host=node-1</p>
-<blockquote>
-<p>添加后，则osd属于host下，启动服务即可接收数据。加入之前和之后对比：</p>
-<p>之前</p>
-<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1      0 root default<br>-2      0     host node-1<br> 0      0 osd.0              down        0          1.00000<br> 1      0 osd.1              down        0          1.00000<br> 2      0 osd.2              down        0          1.00000 </p>
-<p>之后</p>
-<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT  TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1 3.00000 root default<br>-2 3.00000     host node-1<br> 0 1.00000         osd.0      down        0          1.00000<br> 1 1.00000         osd.1      down        0          1.00000<br> 2 1.00000         osd.2      down        0          1.00000 </p>
-</blockquote>
-<p>23、给osd创建sysvinit并启动osd服务</p>
-<p>创建sysvinit,在osd的目录下 <code>touch /var/lib/ceph/osd/{cluster-name}-{osd-num}/sysvinit</code></p>
-<p>touch /var/lib/ceph/osd/ceph-0/sysvinit</p>
-<p>24、添加journal</p>
-<blockquote>
-<pre><code>#清除磁盘所有分区(重新添加时需要)
-#sgdisk --zap-all --clear --mbrtogpt /dev/vdf</code></pre></blockquote>
-<p>Journal大小的选择尊循下面的规则：</p>
-<blockquote>
-<p>osd journal size = {2 * (expected throughput * filestore_max_sync_interval)}</p>
-<p>filestore_max_sync_interval为ceph配置，可以在ceph的config中获取，默认为5s</p>
-</blockquote>
-<p>即osd journal的大小应该设置为(磁盘的带宽 * 同步时间) 的2倍。</p>
-<p>25、给osd和journal打标签<br>数据盘标签<br>sgdisk –typecode=1:4fbd7e29-9d25-41b8-afd0-062c0ceff05d /dev/sdx<br>日志盘标签<br>sgdisk –typecode=1:45b0969e-9b03-4f30-b4c6-b4b80ceff106 /dev/sdx<br>注:对所有日志盘和数据盘执行此操作,日志盘分区与数据盘不同 typecode = 1 代表<br>第一个分区<br>Other TAG<br>sgdisk –typecode=1:4fbd7e29-9d25-41b8-afd0-062c0ceff0f9 – /dev/sdx</p>
-<p>删除旧的journal，把ssd分区的uuid链接到osd目录为journal，并把uuid写入journal_uuid文件</p>
-<p>并执行</p>
-<p>ceph-osd -i osd_numer –mkjournal</p>
-<p>26、在osd所在节点启动osd的服务，将osd状态变为up</p>
-<p><code>service ceph start osd</code></p>
-<p>osd服务启动后，会自动up和in到集群。</p>
-<p>依次把所有osd节点的osd完成部署和启动则集群部署完成</p>
-<blockquote>
-<p>osd的服务部署有精简方法：</p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><pre><code class="go">func name1(arg1 type,arg2 type)(返回值 type){   // 返回值定义
+  返回值= arg1 + arg2
+    return [返回值]   // 此情况下return的返回值可以省略
+} 
+
+func name2(arg1 type, arg2 type)type{   //省略返回值定义
+  ret := arg1 + arg2
+  return ret  // 此时ret必须写上 
+}
+
+func name3(arg1,arg2 type)(res1,res2 type){
+  return
+}
+
+
+# 变长参数
+func name4(x string, y... int){
+  ...
+  // 此时y是一个切片类型  
+}
+name4(&quot;name&quot;, 1,2,3,4,5)</code></pre>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><p>Go语言变量不初始化会有默认的值0，类似calloc, 会对变量进行默认0赋值；</p>
+<p> C中如果不初始化，则只申请了内存，值不一定是什么。 </p>
+<p><strong>map和切片使用前必须初始化</strong></p>
+<p>练习题:</p>
 <ol>
-<li><p>准备：　<code>ceph-disk prepare --cluster {cluster-name} --cluster-uuid {uuid} --fs-type {ext4|xfs|btrfs} {data-path} [{journal-path}]</code></p>
-</li>
-<li><p>激活：　<code>ceph-disk activate {data-path} [--activate-key {path}]</code></p>
-</li>
+<li><p>求数组[1,3,5,7,8]所有元素的和</p>
+<pre><code>package main
+import &quot;fmt&quot;
+func main() {
+    var arr = [5]int{1, 3, 5,7,8}
+    var sum int;
+    for _,v := range arr{
+        sum += v
+    }
+    fmt.Printf(&quot;sum is %d\n&quot;, sum)
+}</code></pre></li>
 </ol>
-<p>注： 如果你的 Ceph 节点上没有 <code>/var/lib/ceph/bootstrap-osd/{cluster}.keyring</code> ，那么应该外加 <code>--activate-key</code>参数。</p>
-<p>osd的自动启动是udev的规则控制，所以需要给osd用sgdisk打上标签</p>
-<p>规则</p>
-<p>/usr/lib/udev/rules.d/95-ceph-osd.rules</p>
-<p>/usr/lib/udev/rules.d/60-ceph-by-parttypeuuid.rules</p>
-</blockquote>
+<ol start="2">
+<li><p>找出数组中和为指定值的两个元素的下标，比如从数组[1,3,5,7,8]中找出和为8的两个元素的下标分别为(0,3)和(1,2)。</p>
+<pre><code>package main
+import &quot;fmt&quot;
+
+func main(){
+    var arr = [5]int{1, 3, 5,7,8}
+    const SUM = 8
+    for oi,ov :=  range arr{
+        for ii := oi; ii&lt;5;ii++{
+            if ov + arr[ii] == SUM{
+                fmt.Printf(&quot;sum equal 8 index is (%d, %d)\n&quot;, oi, ii)
+            }
+        }
+    }
+}</code></pre></li>
+</ol>
+<ol start="3">
+<li><p>请写出下面代码的输出结果</p>
+<pre><code>func main(){
+    var a = make([]string, 5, 10)
+    for i:=0;i&lt;10;i++{
+        a = append(a, fmt.Sprintf(&quot;%v&quot;, i))
+    }
+    fmt.Println(a)
+}</code></pre></li>
+</ol>
+<ol start="4">
+<li><p>请使用内置的sort包对数组 var a = […]int{3,7,8,9,1}进行排序 </p>
+</li>
+<li><p>写一个程序，统计一个字符串中每个单词出现的次数。比如:”how do you do “中how=1 do=2 you=1</p>
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;strings&quot;
+)
+
+func main(){
+    var ch1 string = &quot;how do you do&quot;
+    s1 := strings.Split(ch1, &quot; &quot;)
+    m1 := make(map[string]int, 4)
+    for _,v1:=range s1{
+        _,ok := m1[v1]
+        if !ok {
+            m1[v1] = 1
+        }else{
+            m1[v1] ++
+        }
+    }
+    fmt.Println(m1)
+}
+---
+map[do:2 how:1 you:1]</code></pre></li>
+</ol>
+<ol start="6">
+<li>把函数部分7,8个例子敲一遍并理解</li>
+</ol>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。 </span>
