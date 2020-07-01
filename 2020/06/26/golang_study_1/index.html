@@ -333,7 +333,7 @@
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2020-06-30 00:02:54'>2020-06-26 16:37</time>
+            发布时间 : <time class="date" title='最后更新: 2020-06-30 17:33:48'>2020-06-26 16:37</time>
         
     </div>
     <div class="article-meta">
@@ -713,26 +713,18 @@ func main(){
 import(
     &quot;fmt&quot;
     &quot;os&quot;
+    &quot;unicode&quot;
 )
 
 func main(){
     const str1 = &quot;hello world天津滨海&quot;
-    const suff = &quot;d&quot;                                                //因为循环不会越界，所以最后一次循环的索引不会被拿来    
-    var str2 = str1 + suff                                    //行减法计算，所以在字符串最后拼接一个占用一个字节的字
-    var (                                                                        //符串，就可以对最后一个汉字索引进行计算了
-        iHanzi int
-        index int
-        lastIndex int
-    )
-    const DVALUE  = 3
-    for index = range str2{
-        if index-lastIndex == DVALUE{
-            iHanzi++
+    var count = 0
+    for _,c := range str1{
+        if unicode.Is(unicode.Han, c){
+            count++
         }
-        lastIndex = index
     }
-
-    fmt.Printf(&quot;str1 has Hanzi count %d nums.\n&quot;, iHanzi)
+    fmt.Println(&quot;有&quot;,count,&quot;个汉字。&quot;)
 
     os.Exit(0)
 }</code></pre>
