@@ -1,0 +1,204 @@
+<h1 id="UDP协议直播业务网络调优方法"><a href="#UDP协议直播业务网络调优方法" class="headerlink" title="UDP协议直播业务网络调优方法"></a>UDP协议直播业务网络调优方法</h1><p align="right">2020.02.11</p>
+
+<p>[TOC]</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>​    小鱼连连APP在线直播教学场景， 该APP在网络层采用了UDP协议进行传输。业务部署在虚拟机上，因此本篇着重介绍的是在虚拟机内的调整。</p>
+<h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>​    在把虚拟机网卡的带宽限制提升至5Gbits/s时，业务压力通过负载控制给到每个节点不超过120MBytes/s的带宽就不能再提升了。</p>
+<pre><code>&gt; 修改网卡带宽的方法：
+&gt;
+&gt; 1. 找到虚拟机的domain 
+&gt; # virsh list
+&gt;  Id    Name                           State
+&gt; ----------------------------------------------------
+&gt;  42    xyylcs09-1451                  running
+&gt;  44    xyylcs20-1465                  running
+&gt;
+&gt; 2. 查看虚拟机的虚拟机网卡
+&gt; # virsh domiflist 44
+&gt; Interface  Type       Source     Model       MAC
+&gt; -------------------------------------------------------
+&gt; vnet4      bridge     vswitch-yw virtio      fa:16:3e:90:11:22
+&gt;
+&gt; 3. 查看当前虚拟机网卡带宽
+&gt; # virsh domiftune 44 vnet4
+&gt; inbound.average: 131072
+&gt; inbound.peak   : 131072
+&gt; inbound.burst  : 0
+&gt; inbound.floor  : 0
+&gt; outbound.average: 131072
+&gt; outbound.peak  : 131072
+&gt; outbound.burst : 0
+&gt;
+&gt; 4.调整当前虚拟机网卡带宽
+&gt; # virsh domiftune 44 vnet4 --inbound 655360,655360  --outbound 655360,655360 --live
+&gt; 
+&gt; # virsh domiftune 44 vnet4
+&gt; inbound.average: 655360
+&gt; inbound.peak   : 655360
+&gt; inbound.burst  : 0
+&gt; inbound.floor  : 0
+&gt; outbound.average: 655360
+&gt; outbound.peak  : 655360
+&gt; outbound.burst : 0</code></pre><h3 id="模拟测试"><a href="#模拟测试" class="headerlink" title="模拟测试"></a>模拟测试</h3><p>进行正式调试前，首先使用iperf进行了最大限度的UDP100个线程的压力测试，如下：</p>
+<p><img src="WechatIMG4.png" alt="WechatIMG4"></p>
+<center>图iperf-1</center>
+
+<blockquote>
+<p><em>可以看到上图测试结果丢包率10%以上，该图测试的线程少，100的没有存下来，丢包率更严重。</em></p>
+</blockquote>
+<p>此时进行dropwatch抓包分析<code>dropwatch -l kas</code> （该包需要安装,此输出为演示）</p>
+<pre><code># dropwatch  -l kas
+Initalizing kallsyms db
+dropwatch&gt; start
+Enabling monitoring...
+Kernel monitoring activated.
+Issue Ctrl-C to stop monitoring
+3 drops at tpacket_rcv+5f (0xffffffff816673ef)
+1 drops at skb_queue_purge+18 (0xffffffff8155e028)
+3 drops at tpacket_rcv+5f (0xffffffff816673ef)
+2 drops at tcp_v4_rcv+87 (0xffffffff815d6437)
+2 drops at __udp4_lib_rcv+765 (0xffffffff815e26e5)
+1 drops at tpacket_rcv+5f (0xffffffff816673ef)
+4 drops at tpacket_rcv+5f (0xffffffff816673ef)
+3 drops at tpacket_rcv+5f (0xffffffff816673ef)
+3 drops at __udp4_lib_rcv+765 (0xffffffff815e26e5)
+1 drops at tpacket_rcv+5f (0xffffffff816673ef)</code></pre><p><img src="WechatIMG1.png" alt="WechatIMG1"></p>
+<center>图-drop情况</center>
+
+<blockquote>
+<p>如图所示发现大量包(连续几百的出现是异常丢包)的是在pfifo_fast_enqueue后offset+50的地址处。</p>
+<p>dropwatch的使用方法此处略。 </p>
+<p>最简单的方法就是搜一下这个函数， 网上很多，直接就有人告诉了 要修改txqueuelen。</p>
+<p>通过代码查看，这个是tc的qos里的一个队列函数，进入该队列的时候队列内存空间满了。</p>
+<pre><code>int dev_queue_xmit(struct sk_buff *skb)
+{
+……………….
+q = dev-&gt;qdisc;
+if (q-&gt;enqueue) {
+   /* 对应于pfifo_fast_enqueue 函数*/
+    int ret = q-&gt;enqueue(skb, q);
+   /*启动这个设备的发送，这里涉及到两个函数pfifo_fast_dequeue ，pfifo_fast_requeue 稍后介绍*/
+    qdisc_run(dev);
+    return;
+}
+
+static int pfifo_fast_enqueue(struct sk_buff skb, struct Qdisc qdisc)
+{
+…………..
+
+list = ((struct sk_buff_head*)qdisc-&gt;data) +
+    prio2band[skb-&gt;priority&amp;TC_PRIO_MAX];
+    /*首先确定这个数据包的优先级，决定放入的队列*/
+if (list-&gt;qlen &lt;= skb-&gt;dev-&gt;tx_queue_len) {
+    __skb_queue_tail(list, skb);    /*将数据包放入队列的尾部*/
+    qdisc-&gt;q.qlen++;
+    return 0;
+}
+……………..
+}</code></pre></blockquote>
+<blockquote>
+<p>此处确认环境中使用了TC</p>
+<pre><code class="#">~# tc qdisc show dev eth0 
+qdisc htb 1: root refcnt 92 r2q 10 default 11 direct_packets_stat 0
+qdisc sfq 113: parent 1:13 limit 127p quantum 1514b divisor 1024 perturb 5sec 
+qdisc sfq 111: parent 1:11 limit 127p quantum 1514b divisor 1024 perturb 5sec 
+qdisc sfq 112: parent 1:12 limit 127p quantum 1514b divisor 1024 perturb 5sec </code></pre>
+</blockquote>
+<p>调整虚拟机的网卡txqueuelen, 修改方法:</p>
+<p>紫光云的虚拟机网卡默认值为1000,此处我们修改为5000, 值得增大会导致延时增加，所以要找到最合适的值，刚好不丢包，又能满足带宽需求。</p>
+<p>修改方法如下：</p>
+<pre><code>echo 5000 &gt;  /sys/class/net/eth0/tx_queue_len
+or
+ifconfig eth0 txqueuelen 5000
+or
+ip link set eth0 txqueuelen 5000
+以上均是临时修改方法。 
+
+永久设置方法，以及以后新建虚机自动更新txqueue方法：
+将命令加入自启动或从物理机修改
+or
+在所有计算节点添加文件：
+# cat /etc/udev/rules.d/60-vm-tap.rules 
+ACTION==&quot;add&quot;, KERNEL==&quot;tap?*&quot;, RUN+=&quot;/sbin/ip link set %k txqueuelen 5000&quot;
+所有计算节点执行：
+/sbin/udevadm control --reload-rules</code></pre><p>修改后再看iperf输出</p>
+<p><img src="WechatIMG5.png" alt="WechatIMG5"></p>
+<center>图iperf-2</center>
+
+<blockquote>
+<p>此时测试100个10m线程已然完全不丢包。该值调整无异常</p>
+</blockquote>
+<h3 id="业务测试"><a href="#业务测试" class="headerlink" title="业务测试"></a>业务测试</h3><p>经过第一轮参数调整后，反馈带宽增加到120M，再调txqueuelen已经不能提升带宽了。</p>
+<p>此时执行<code>netstat -su</code>查看udp丢包情况,如下:</p>
+<p><img src="WechatIMG3.jpeg" alt="WechatIMG3"></p>
+<center>图netstat-1</center>
+
+<blockquote>
+<p>通过查看UDP段的网卡统计信息， 发现send buffer 和receive buffer都有错误,</p>
+<p>一般认为这是socket接收内存不足导致， 可以增加rmem的size来处理该问题:</p>
+<p>drop信息：</p>
+<p><img src="WechatIMG6.png" alt="WechatIMG6"></p>
+<blockquote>
+<p>大量udp4_lib_rcv offset 765的地址处drop包; 经查看该处为udp协议层的实现。</p>
+<p>一般是包非法或者socket没找到以及队列满，队列部分代码如下：</p>
+<pre><code>if (sk_rcvqueues_full(sk, skb, sk-&gt;sk_rcvbuf))
+  goto drop;
+
+/*
+ * Take into account size of receive queue and backlog queue
+ * Do not take into account this skb truesize,
+ * to allow even a single big packet to come.
+ */
+static inline bool sk_rcvqueues_full(const struct sock *sk, const struct sk_buff *skb,
+                                     unsigned int limit)
+{
+        unsigned int qsize = sk-&gt;sk_backlog.len + atomic_read(&amp;sk-&gt;sk_rmem_alloc);
+
+        return qsize &gt; limit;
+}</code></pre></blockquote>
+<p>修改该段内存size为25MB（根据实际情况来增加至drop现象降低，过大会导致雪崩效应），如下</p>
+<pre><code>sysctl -w net.core.rmem_max=26214400  
+
+sysctl -w net.core.rmem_default=26214400
+
+sysctl -w net.core.wmem_default=26214400
+
+sysctl -w net.core.wmem_max=26214400
+
+or
+
+echo size_value &gt; /proc/sys/net/core/wmem_default / ../..</code></pre><pre><code>还可以通过如下文件观察udp状态
+/proc/net/snmp
+/proc/net/udp
+/proc/net/snmp</code></pre></blockquote>
+<p>此外, 在中断的下半部，ksoftirqd的调用中poll从skb中读取包的过程每次处理包的的数量和时间也可以优化，</p>
+<pre><code class="#">cat /proc/net/softnet_stat
+00001346 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+0000d884 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+0003bda0 00000000 00000003 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+00006964 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+每一行代表一个 struct softnet_data 变量。因为每个 CPU 只有一个该变量，所以每行其实代表一个CPU每列用空格隔开，数值用 16 进制表示
+第一列 sd-&gt;processed，是处理的网络帧的数量。如果你使用了 ethernet bonding， 那这个值会大于总的网络帧的数量，因为 ethernet bonding 驱动有时会触发网络数据被 重新处理（re-processed）
+第二列，sd-&gt;dropped，是因为处理不过来而 drop 的网络帧数量。后面会展开这一话题
+第三列，sd-&gt;time_squeeze，由于 budget 或 time limit 用完而退出 net_rx_action 循环的次数
+接下来的 5 列全是 0
+第九列，sd-&gt;cpu_collision，是为了发送包而获取锁的时候有冲突的次数
+第十列，sd-&gt;received_rps，是这个 CPU 被其他 CPU 唤醒去收包的次数
+最后一列，flow_limit_count，是达到 flow limit 的次数。flow limit 是 RPS 的特性
+如果第三列有不为0的就需要调整此项,应为time_limit或者budget用完而退出net_rx_action循环的次数
+sysctl -w net.core.netdev_budget=600 （默认值是:300 ）
+如果在启用了RPS的网卡中，此处第二列丢包则需要增加backlog的值。
+sysctl -w net.core.netdev_max_backlog=2000 (默认值是:1000)
+RPS开启后消耗的时间会体现在top的si字段之后。
+虚拟机目前都是单队列网卡没有开启RSS。</code></pre>
+<p>经过这些调整后，虚拟机业务带宽可以跑满网卡带宽。</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><h3 id="其他优化项"><a href="#其他优化项" class="headerlink" title="其他优化项"></a>其他优化项</h3><ol>
+<li><pre><code>关闭打印时间戳： sysctl -w net.core.netdev_tstamp_prequeue=0</code></pre></li>
+<li><p>开启RPS或RFS，见参考文档。</p>
+</li>
+<li><p>虚拟机采用vxlan网络，经过封装后报文长度增加50个字节，因此需要将虚拟机网卡mtu降低为1450。</p>
+</li>
+</ol>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p><a href="https://arthurchiao.github.io/blog/tuning-stack-rx-zh/#chap_10.3" target="_blank" rel="noopener">https://arthurchiao.github.io/blog/tuning-stack-rx-zh/#chap_10.3</a></p>
+<p><a href="https://arthurchiao.github.io/blog/tuning-stack-tx-zh/" target="_blank" rel="noopener">https://arthurchiao.github.io/blog/tuning-stack-tx-zh/</a></p>
+<p><a href="https://jermine.vdo.pub/linux/linux服务器丢包故障的解决/" target="_blank" rel="noopener">https://jermine.vdo.pub/linux/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%A2%E5%8C%85%E6%95%85%E9%9A%9C%E7%9A%84%E8%A7%A3%E5%86%B3/</a></p>
+<p><a href="https://ylgrgyq.github.io/2017/07/23/linux-receive-packet-1/" target="_blank" rel="noopener">https://ylgrgyq.github.io/2017/07/23/linux-receive-packet-1/</a></p>

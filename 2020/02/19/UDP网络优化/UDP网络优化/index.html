@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Ceph Hammer版(0.94.10)手动部署for CentOS 7.x | Wang Lin . OPS</title>
-  <meta name="keywords" content=" ceph ">
-  <meta name="description" content="Ceph Hammer版(0.94.10)手动部署for CentOS 7.x | Wang Lin . OPS">
+  <title>UDP网络优化/UDP网络优化 | Wang Lin . OPS</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="UDP网络优化/UDP网络优化 | Wang Lin . OPS">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="欢迎留言评论welcome attach comments">
 <meta property="og:type" content="website">
@@ -334,34 +334,19 @@
 </aside>
 <div id="post">
     <div class="pjax">
-        <article id="post-H版部署(0.94.10)" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-UDP网络优化/UDP网络优化" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">Ceph Hammer版(0.94.10)手动部署for CentOS 7.x</h1>
+        <h1 class="article-title">UDP网络优化/UDP网络优化</h1>
     
     <div class="article-meta">
         
         
         
-        <span class="book">
-            <i class="iconfont icon-category"></i>
-            
-            
-            <a  data-rel="存储">存储</a>
-            
-        </span>
-        
-        
-        <span class="tag">
-            <i class="iconfont icon-tag"></i>
-            
-            <a class="color5">ceph</a>
-            
-        </span>
         
     </div>
     <div class="article-meta">
         
-            发布时间 : <time class="date" title='最后更新: 2020-06-25 12:10:05'>2020-06-24 00:00</time>
+            发布时间 : <time class="date" title='最后更新: 2020-02-19 16:59:42'>2020-02-19 16:59</time>
         
     </div>
     <div class="article-meta">
@@ -383,7 +368,7 @@
     
     <div class="toc-ref">
     
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#UDP协议直播业务网络调优方法"><span class="toc-text">UDP协议直播业务网络调优方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#现象描述"><span class="toc-text">现象描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模拟测试"><span class="toc-text">模拟测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#业务测试"><span class="toc-text">业务测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后续"><span class="toc-text">后续</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#其他优化项"><span class="toc-text">其他优化项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考文档"><span class="toc-text">参考文档</span></a></li></ol></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -399,179 +384,210 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p align="right">--lin.wang 20190310</p>
+        <h1 id="UDP协议直播业务网络调优方法"><a href="#UDP协议直播业务网络调优方法" class="headerlink" title="UDP协议直播业务网络调优方法"></a>UDP协议直播业务网络调优方法</h1><p align="right">2020.02.11</p>
 
-<p>环境有三个节点node-1,node-2,node-3，每个节点三个ssd盘作为osd</p>
-<p>1、添加yum源ceph、base、epel</p>
-<p>2、所有节点添加互信如：root用户，及hosts(/etc/hosts)列表</p>
-<p>3、/etc/ssh/ssh_config中: #   StrictHostKeyChecking ask　注释去掉值改成no</p>
-<p>4、关闭firewalld、selinux，或者开放相应端口: mon 6789、osd 6800-8100</p>
-<p>5、配置时钟同步ntp</p>
-<p>6、每个节点安装ceph包,yum install ceph -y</p>
-<hr>
-<p><em>mon部署,7-10在node-1执行</em></p>
-<p>7、uuidgen生一个uuid,用作fsid</p>
-<p>8、切换到/etc/ceph目录下，创建ceph.conf，编写配置文件，如下</p>
-<pre><code>[global]
-fsid = 4f41a244-032c-4d85-b3ff-7cefb2d1ed16
-mon_initial_members = node-1,node-2,node-3
-mon_host = 192.168.122.94,192.168.122.95,192.168.122.96
-public_network = 192.168.122.0/24
-cluster_network = 192.168.201.0/24
-auth_cluster_required = cephx
-auth_service_required = cephx
-auth_client_required = cephx
-osd_journal_size = 1024
-filestore_xattr_use_omap = true
-osd_pool_default_size = 3 # Write an object n times.
-osd_pool_default_min_size = 1 # Allow writing n copy in a degraded state.
-osd_pool_default_pg_num = 128
-osd_pool_default_pgp_num = 128
-osd_crush_chooseleaf_type = 1</code></pre><p>9、</p>
-<p>创建monitor的key用于多个monitor间通信，保存在<code>/tmp/ceph.mon.keyring</code></p>
-<p><code>ceph-authtool --create-keyring /tmp/ceph.mon.keyring --gen-key -n mon. --cap mon &#39;allow *&#39;</code></p>
-<p>生成管理用户<code>client.admin</code>及其key，保存在<code>/etc/ceph/ceph.client.admin.keyring</code></p>
-<pre><code>ceph-authtool --create-keyring /etc/ceph/ceph.client.admin.keyring --gen-key -n client.admin --set-uid=0 --cap mon &#39;allow *&#39; --cap osd &#39;allow *&#39; --cap mds &#39;allow&#39;
-#key文件命令规则:{cluster name}-{user-name}.keyring</code></pre><p>添加<code>client.admin</code>的key到<code>ceph.mon.keyring</code>文件</p>
-<pre><code>ceph-authtool /tmp/ceph.mon.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring</code></pre><p>10、创建monitor map</p>
-<pre><code>#默认的monitor port是6789
-monmaptool --create --add node-1 192.168.122.94 --add node-2 192.168.122.95 --add node-3 192.168.122.96 --fsid 4f41a244-032c-4d85-b3ff-7cefb2d1ed16 /tmp/monmap</code></pre><p>monmaptool –print /tmp/monmap可以查看生成的monmap</p>
-<p>ceph auth get mon. 可以获取monmap</p>
+<p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#UDP协议直播业务网络调优方法"><span class="toc-text">UDP协议直播业务网络调优方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#现象描述"><span class="toc-text">现象描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#模拟测试"><span class="toc-text">模拟测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#业务测试"><span class="toc-text">业务测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后续"><span class="toc-text">后续</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#其他优化项"><span class="toc-text">其他优化项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考文档"><span class="toc-text">参考文档</span></a></li></ol></li></ol></li></ol></div></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>​    小鱼连连APP在线直播教学场景， 该APP在网络层采用了UDP协议进行传输。业务部署在虚拟机上，因此本篇着重介绍的是在虚拟机内的调整。</p>
+<h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><p>​    在把虚拟机网卡的带宽限制提升至5Gbits/s时，业务压力通过负载控制给到每个节点不超过120MBytes/s的带宽就不能再提升了。</p>
+<pre><code>&gt; 修改网卡带宽的方法：
+&gt;
+&gt; 1. 找到虚拟机的domain 
+&gt; # virsh list
+&gt;  Id    Name                           State
+&gt; ----------------------------------------------------
+&gt;  42    xyylcs09-1451                  running
+&gt;  44    xyylcs20-1465                  running
+&gt;
+&gt; 2. 查看虚拟机的虚拟机网卡
+&gt; # virsh domiflist 44
+&gt; Interface  Type       Source     Model       MAC
+&gt; -------------------------------------------------------
+&gt; vnet4      bridge     vswitch-yw virtio      fa:16:3e:90:11:22
+&gt;
+&gt; 3. 查看当前虚拟机网卡带宽
+&gt; # virsh domiftune 44 vnet4
+&gt; inbound.average: 131072
+&gt; inbound.peak   : 131072
+&gt; inbound.burst  : 0
+&gt; inbound.floor  : 0
+&gt; outbound.average: 131072
+&gt; outbound.peak  : 131072
+&gt; outbound.burst : 0
+&gt;
+&gt; 4.调整当前虚拟机网卡带宽
+&gt; # virsh domiftune 44 vnet4 --inbound 655360,655360  --outbound 655360,655360 --live
+&gt; 
+&gt; # virsh domiftune 44 vnet4
+&gt; inbound.average: 655360
+&gt; inbound.peak   : 655360
+&gt; inbound.burst  : 0
+&gt; inbound.floor  : 0
+&gt; outbound.average: 655360
+&gt; outbound.peak  : 655360
+&gt; outbound.burst : 0</code></pre><h3 id="模拟测试"><a href="#模拟测试" class="headerlink" title="模拟测试"></a>模拟测试</h3><p>进行正式调试前，首先使用iperf进行了最大限度的UDP100个线程的压力测试，如下：</p>
+<p><img src="WechatIMG4.png" alt="WechatIMG4"></p>
+<center>图iperf-1</center>
+
 <blockquote>
-<p>可以停止mon服务后使用如下方法导出monmap</p>
-<p>ceph-mon -i hostname –extract-monmap /tmp/monmap 从当前节点的/var/lib/ceph/mon/​hostname​ 导出monmap</p>
-<p>注入monmap</p>
-<p>停止所有节点mon服务</p>
-<p>ceph-mon -i mon-id –inject-monmap /tmp/monmap</p>
-<p>启动mon服务</p>
+<p><em>可以看到上图测试结果丢包率10%以上，该图测试的线程少，100的没有存下来，丢包率更严重。</em></p>
 </blockquote>
-<p>11、在每个mon节点上分别创建mon的目录</p>
-<p><code>sudo mkdir /var/lib/ceph/mon/{cluster-name}-{hostname}</code></p>
-<p>​    node-1&gt; mkdir /var/lib/ceph/mon/ceph-node-1</p>
-<p>​    node-2&gt; mkdir /var/lib/ceph/mon/ceph-node-2</p>
-<p>​    node-3&gt; mkdir /var/lib/ceph/mon/ceph-node-3</p>
-<p>12、初始化monitor</p>
-<p>将node-1的</p>
+<p>此时进行dropwatch抓包分析<code>dropwatch -l kas</code> （该包需要安装,此输出为演示）</p>
+<pre><code># dropwatch  -l kas
+Initalizing kallsyms db
+dropwatch&gt; start
+Enabling monitoring...
+Kernel monitoring activated.
+Issue Ctrl-C to stop monitoring
+3 drops at tpacket_rcv+5f (0xffffffff816673ef)
+1 drops at skb_queue_purge+18 (0xffffffff8155e028)
+3 drops at tpacket_rcv+5f (0xffffffff816673ef)
+2 drops at tcp_v4_rcv+87 (0xffffffff815d6437)
+2 drops at __udp4_lib_rcv+765 (0xffffffff815e26e5)
+1 drops at tpacket_rcv+5f (0xffffffff816673ef)
+4 drops at tpacket_rcv+5f (0xffffffff816673ef)
+3 drops at tpacket_rcv+5f (0xffffffff816673ef)
+3 drops at __udp4_lib_rcv+765 (0xffffffff815e26e5)
+1 drops at tpacket_rcv+5f (0xffffffff816673ef)</code></pre><p><img src="WechatIMG1.png" alt="WechatIMG1"></p>
+<center>图-drop情况</center>
+
 <blockquote>
-<p>/tmp/monmoap、/tmp/ceph.mon.keyring、/etc/ceph/ceph.conf、/etc/ceph/ceph.client.admin.keyring</p>
-<p>部署完毕后，/tmp下的这两个文件可以删除</p>
+<p>如图所示发现大量包(连续几百的出现是异常丢包)的是在pfifo_fast_enqueue后offset+50的地址处。</p>
+<p>dropwatch的使用方法此处略。 </p>
+<p>最简单的方法就是搜一下这个函数， 网上很多，直接就有人告诉了 要修改txqueuelen。</p>
+<p>通过代码查看，这个是tc的qos里的一个队列函数，进入该队列的时候队列内存空间满了。</p>
+<pre><code>int dev_queue_xmit(struct sk_buff *skb)
+{
+……………….
+q = dev-&gt;qdisc;
+if (q-&gt;enqueue) {
+   /* 对应于pfifo_fast_enqueue 函数*/
+    int ret = q-&gt;enqueue(skb, q);
+   /*启动这个设备的发送，这里涉及到两个函数pfifo_fast_dequeue ，pfifo_fast_requeue 稍后介绍*/
+    qdisc_run(dev);
+    return;
+}
+
+static int pfifo_fast_enqueue(struct sk_buff skb, struct Qdisc qdisc)
+{
+…………..
+
+list = ((struct sk_buff_head*)qdisc-&gt;data) +
+    prio2band[skb-&gt;priority&amp;TC_PRIO_MAX];
+    /*首先确定这个数据包的优先级，决定放入的队列*/
+if (list-&gt;qlen &lt;= skb-&gt;dev-&gt;tx_queue_len) {
+    __skb_queue_tail(list, skb);    /*将数据包放入队列的尾部*/
+    qdisc-&gt;q.qlen++;
+    return 0;
+}
+……………..
+}</code></pre></blockquote>
+<blockquote>
+<p>此处确认环境中使用了TC</p>
+<pre><code class="#">~# tc qdisc show dev eth0 
+qdisc htb 1: root refcnt 92 r2q 10 default 11 direct_packets_stat 0
+qdisc sfq 113: parent 1:13 limit 127p quantum 1514b divisor 1024 perturb 5sec 
+qdisc sfq 111: parent 1:11 limit 127p quantum 1514b divisor 1024 perturb 5sec 
+qdisc sfq 112: parent 1:12 limit 127p quantum 1514b divisor 1024 perturb 5sec </code></pre>
 </blockquote>
-<p>复制到node-2和node-3的对应目录</p>
-<p><code>ceph-mon [--cluster {cluster-name}] --mkfs -i {hostname} --monmap /tmp/monmap --keyring /tmp/ceph.mon.keyring</code></p>
-<p>node-1&gt; ceph-mon –mkfs -i node-1 –monmap /tmp/monmap –keyring /tmp/ceph.mon.keyring</p>
-<p>node-2&gt; ceph-mon –mkfs -i node-2 –monmap /tmp/monmap –keyring /tmp/ceph.mon.keyring</p>
-<p>node-3&gt; ceph-mon –mkfs -i node-3 –monmap /tmp/monmap –keyring /tmp/ceph.mon.keyring</p>
-<p>此时在每个节点/var/lib/ceph/mon/{cluster}-{hostname}目录下生成了store.db和keyring</p>
-<p>13、 在每个节点的mon目录下，创建两个文件：</p>
-<p>/var/lib/ceph/mon/{cluster}-{hostname}/{done,sysvinit}</p>
-<p>​    node-1&gt; touch /var/lib/ceph/mon/ceph-node-1/{done,sysvinit}</p>
-<p>​    node-2&gt; touch /var/lib/ceph/mon/ceph-node-2/{done,sysvinit}</p>
-<p>​    node-3&gt; touch /var/lib/ceph/mon/ceph-node-3/{done,sysvinit}</p>
+<p>调整虚拟机的网卡txqueuelen, 修改方法:</p>
+<p>紫光云的虚拟机网卡默认值为1000,此处我们修改为5000, 值得增大会导致延时增加，所以要找到最合适的值，刚好不丢包，又能满足带宽需求。</p>
+<p>修改方法如下：</p>
+<pre><code>echo 5000 &gt;  /sys/class/net/eth0/tx_queue_len
+or
+ifconfig eth0 txqueuelen 5000
+or
+ip link set eth0 txqueuelen 5000
+以上均是临时修改方法。 
+
+永久设置方法，以及以后新建虚机自动更新txqueue方法：
+将命令加入自启动或从物理机修改
+or
+在所有计算节点添加文件：
+# cat /etc/udev/rules.d/60-vm-tap.rules 
+ACTION==&quot;add&quot;, KERNEL==&quot;tap?*&quot;, RUN+=&quot;/sbin/ip link set %k txqueuelen 5000&quot;
+所有计算节点执行：
+/sbin/udevadm control --reload-rules</code></pre><p>修改后再看iperf输出</p>
+<p><img src="WechatIMG5.png" alt="WechatIMG5"></p>
+<center>图iperf-2</center>
+
 <blockquote>
-<p>其中done文件表示monitor已经创建完成，可以启动使用了。</p>
-<p>缺少sysvinit会报错。</p>
-<p>老版本要求创建upstart已自动启动，当前版本创建后会起不来。</p>
+<p>此时测试100个10m线程已然完全不丢包。该值调整无异常</p>
 </blockquote>
-<p>14、启动monitor服务: 每个mon节点，/etc/init.d/ceph start mon</p>
-<p>15、开机自启动，chkconfig ceph on</p>
-<hr>
-<p>osd部署</p>
-<p>16、创建osd id<code>ceph osd create</code></p>
-<p>本次有９个osd，因此创建9个即0-8: <code>for i in $(seq 0 8) ;do ceph osd create;done</code></p>
+<h3 id="业务测试"><a href="#业务测试" class="headerlink" title="业务测试"></a>业务测试</h3><p>经过第一轮参数调整后，反馈带宽增加到120M，再调txqueuelen已经不能提升带宽了。</p>
+<p>此时执行<code>netstat -su</code>查看udp丢包情况,如下:</p>
+<p><img src="WechatIMG3.jpeg" alt="WechatIMG3"></p>
+<center>图netstat-1</center>
+
 <blockquote>
-<p>新版本支持指定osd id，当前版本不支持</p>
-<p>创建完成后，可以通过ceph osd tree看到所有osd处于down和没有crush weight的状态</p>
-<p>[root@ceph-1 ~]# ceph osd tree<br>ID WEIGHT TYPE NAME    UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1      0 root default<br> 0      0 osd.0           down        0          1.00000<br> 1      0 osd.1           down        0          1.00000<br> 2      0 osd.2           down        0          1.00000<br> 3      0 osd.3           down        0          1.00000<br> 4      0 osd.4           down        0          1.00000<br> 5      0 osd.5           down        0          1.00000<br> 6      0 osd.6           down        0          1.00000<br> 7      0 osd.7           down        0          1.00000<br> 8      0 osd.8           down        0          1.00000</p>
-</blockquote>
-<p>17、在每个节点创建osd的目录,<code>mkdir /var/lib/ceph/osd/{cluster-name}-{osd-number}</code></p>
-<p>​    node-1&gt; mkdir /var/lib/ceph/osd/ceph-{0..2}</p>
-<p>​    node-2&gt; mkdir /var/lib/ceph/osd/ceph-{3..5}</p>
-<p>​    node-3&gt; mkdir /var/lib/ceph/osd/ceph-{6..8}</p>
-<p>18、将所有osd磁盘分区并挂载</p>
-<p><code>parted -s /dev/vdb mklabel gpt mkpart primary 2048s 100%</code></p>
-<p><code>mkfs.xfs /dev/vdb1</code></p>
-<pre><code>[root@ceph-1 osd]# df -h
-Filesystem               Size  Used Avail Use% Mounted on
-/dev/mapper/centos-root  7.1G  1.2G  6.0G  16% /
-devtmpfs                 2.0G     0  2.0G   0% /dev
-tmpfs                    2.0G     0  2.0G   0% /dev/shm
-tmpfs                    2.0G  8.5M  2.0G   1% /run
-tmpfs                    2.0G     0  2.0G   0% /sys/fs/cgroup
-/dev/vda1               1014M  125M  890M  13% /boot
-tmpfs                    396M     0  396M   0% /run/user/0
-/dev/vdb1                 10G   33M   10G   1% /var/lib/ceph/osd/ceph-0
-/dev/vdc1                 10G   33M   10G   1% /var/lib/ceph/osd/ceph-1
-/dev/vdd1                 10G   33M   10G   1% /var/lib/ceph/osd/ceph-2</code></pre><p>19、各osd节点初始化osd目录</p>
-<p><code>ceph-osd -i {osd-num} --mkfs --mkkey --osd-uuid [{uuid}]</code></p>
-<p>ceph-osd -i 0 –mkfs –mkkey </p>
+<p>通过查看UDP段的网卡统计信息， 发现send buffer 和receive buffer都有错误,</p>
+<p>一般认为这是socket接收内存不足导致， 可以增加rmem的size来处理该问题:</p>
+<p>drop信息：</p>
+<p><img src="WechatIMG6.png" alt="WechatIMG6"></p>
 <blockquote>
-<p>加 <code>--mkkey</code> 选项运行 <code>ceph-osd</code> 之前，此目录必须是空的；另外，如果集群名字不是默认值，还要给 <code>ceph-osd</code> 指定 <code>--cluster</code> 选项。</p>
-</blockquote>
-<p>20、注册osd的keyring.</p>
-<p><code>ceph auth add osd.{osd-num} osd &#39;allow *&#39; mon &#39;allow profile osd&#39; -i /var/lib/ceph/osd/{cluster-name}-{osd-num}/keyring</code></p>
-<p>ceph auth add osd.0 osd ‘allow *’ mon ‘allow profile osd’ -i /var/lib/ceph/osd/ceph-0/keyring</p>
-<blockquote>
-<p>路径内 <code>ceph-{osd-num}</code> 里的 <code>ceph</code> 其含义为 <code>$cluster-$id</code> ，如果你的集群名字不是 <code>ceph</code> ，请指定自己的集群名</p>
-<p>对于恢复已有的keyring,可以使用ceph auth import -i osd_path/keyring并auth caps赋权:ceph auth caps osd.0 osd ‘allow *’ mon ‘allow profile osd’</p>
-</blockquote>
-<p>21、将节点加入到crush map，并放置在default根root下。</p>
-<p><code>ceph [--cluster {cluster-name}] osd crush add-bucket {hostname} host</code></p>
-<p>ceph osd crush add-bucket node-1 host </p>
-<p>ceph osd crush move node-1 root=default</p>
-<blockquote>
-<p>move到root下前后crush 对比</p>
-<p>之前</p>
-<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT TYPE NAME    UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-2      0 host node-1<br>-1      0 root default                                   </p>
-<p>之后</p>
-<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1      0 root default<br>-2      0     host node-1   </p>
-<p>crush中没有删除bucket的命令，只能导出crushmap修改</p>
-<p>先mkkey才能mova osd 到bucket下，否则mkkey会报错</p>
-</blockquote>
-<p>22、在crushmap把osd添加到host下：</p>
-<p><code>ceph [--cluster {cluster-name}] osd crush add {id-or-name} {weight} [{bucket-type}={bucket-name} ...]</code></p>
-<p>ceph osd crush add osd.0 1.0 host=node-1</p>
-<blockquote>
-<p>添加后，则osd属于host下，启动服务即可接收数据。加入之前和之后对比：</p>
-<p>之前</p>
-<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1      0 root default<br>-2      0     host node-1<br> 0      0 osd.0              down        0          1.00000<br> 1      0 osd.1              down        0          1.00000<br> 2      0 osd.2              down        0          1.00000 </p>
-<p>之后</p>
-<p>[root@ceph-1 osd]# ceph osd tree<br>ID WEIGHT  TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY<br>-1 3.00000 root default<br>-2 3.00000     host node-1<br> 0 1.00000         osd.0      down        0          1.00000<br> 1 1.00000         osd.1      down        0          1.00000<br> 2 1.00000         osd.2      down        0          1.00000 </p>
-</blockquote>
-<p>23、给osd创建sysvinit并启动osd服务</p>
-<p>创建sysvinit,在osd的目录下 <code>touch /var/lib/ceph/osd/{cluster-name}-{osd-num}/sysvinit</code></p>
-<p>touch /var/lib/ceph/osd/ceph-0/sysvinit</p>
-<p>24、添加journal</p>
-<blockquote>
-<pre><code>#清除磁盘所有分区(重新添加时需要)
-#sgdisk --zap-all --clear --mbrtogpt /dev/vdf</code></pre></blockquote>
-<p>Journal大小的选择尊循下面的规则：</p>
-<blockquote>
-<p>osd journal size = {2 * (expected throughput * filestore_max_sync_interval)}</p>
-<p>filestore_max_sync_interval为ceph配置，可以在ceph的config中获取，默认为5s</p>
-</blockquote>
-<p>即osd journal的大小应该设置为(磁盘的带宽 * 同步时间) 的2倍。</p>
-<p>25、给osd和journal打标签<br>数据盘标签<br>sgdisk –typecode=1:4fbd7e29-9d25-41b8-afd0-062c0ceff05d /dev/sdx<br>日志盘标签<br>sgdisk –typecode=1:45b0969e-9b03-4f30-b4c6-b4b80ceff106 /dev/sdx<br>注:对所有日志盘和数据盘执行此操作,日志盘分区与数据盘不同 typecode = 1 代表<br>第一个分区<br>Other TAG<br>sgdisk –typecode=1:4fbd7e29-9d25-41b8-afd0-062c0ceff0f9 – /dev/sdx</p>
-<p>删除旧的journal，把ssd分区的uuid链接到osd目录为journal，并把uuid写入journal_uuid文件</p>
-<p>并执行</p>
-<p>ceph-osd -i osd_numer –mkjournal</p>
-<p>26、在osd所在节点启动osd的服务，将osd状态变为up</p>
-<p><code>service ceph start osd</code></p>
-<p>osd服务启动后，会自动up和in到集群。</p>
-<p>依次把所有osd节点的osd完成部署和启动则集群部署完成</p>
-<blockquote>
-<p>osd的服务部署有精简方法：</p>
-<ol>
-<li><p>准备：　<code>ceph-disk prepare --cluster {cluster-name} --cluster-uuid {uuid} --fs-type {ext4|xfs|btrfs} {data-path} [{journal-path}]</code></p>
+<p>大量udp4_lib_rcv offset 765的地址处drop包; 经查看该处为udp协议层的实现。</p>
+<p>一般是包非法或者socket没找到以及队列满，队列部分代码如下：</p>
+<pre><code>if (sk_rcvqueues_full(sk, skb, sk-&gt;sk_rcvbuf))
+  goto drop;
+
+/*
+ * Take into account size of receive queue and backlog queue
+ * Do not take into account this skb truesize,
+ * to allow even a single big packet to come.
+ */
+static inline bool sk_rcvqueues_full(const struct sock *sk, const struct sk_buff *skb,
+                                     unsigned int limit)
+{
+        unsigned int qsize = sk-&gt;sk_backlog.len + atomic_read(&amp;sk-&gt;sk_rmem_alloc);
+
+        return qsize &gt; limit;
+}</code></pre></blockquote>
+<p>修改该段内存size为25MB（根据实际情况来增加至drop现象降低，过大会导致雪崩效应），如下</p>
+<pre><code>sysctl -w net.core.rmem_max=26214400  
+
+sysctl -w net.core.rmem_default=26214400
+
+sysctl -w net.core.wmem_default=26214400
+
+sysctl -w net.core.wmem_max=26214400
+
+or
+
+echo size_value &gt; /proc/sys/net/core/wmem_default / ../..</code></pre><pre><code>还可以通过如下文件观察udp状态
+/proc/net/snmp
+/proc/net/udp
+/proc/net/snmp</code></pre></blockquote>
+<p>此外, 在中断的下半部，ksoftirqd的调用中poll从skb中读取包的过程每次处理包的的数量和时间也可以优化，</p>
+<pre><code class="#">cat /proc/net/softnet_stat
+00001346 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+0000d884 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+0003bda0 00000000 00000003 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+00006964 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+每一行代表一个 struct softnet_data 变量。因为每个 CPU 只有一个该变量，所以每行其实代表一个CPU每列用空格隔开，数值用 16 进制表示
+第一列 sd-&gt;processed，是处理的网络帧的数量。如果你使用了 ethernet bonding， 那这个值会大于总的网络帧的数量，因为 ethernet bonding 驱动有时会触发网络数据被 重新处理（re-processed）
+第二列，sd-&gt;dropped，是因为处理不过来而 drop 的网络帧数量。后面会展开这一话题
+第三列，sd-&gt;time_squeeze，由于 budget 或 time limit 用完而退出 net_rx_action 循环的次数
+接下来的 5 列全是 0
+第九列，sd-&gt;cpu_collision，是为了发送包而获取锁的时候有冲突的次数
+第十列，sd-&gt;received_rps，是这个 CPU 被其他 CPU 唤醒去收包的次数
+最后一列，flow_limit_count，是达到 flow limit 的次数。flow limit 是 RPS 的特性
+如果第三列有不为0的就需要调整此项,应为time_limit或者budget用完而退出net_rx_action循环的次数
+sysctl -w net.core.netdev_budget=600 （默认值是:300 ）
+如果在启用了RPS的网卡中，此处第二列丢包则需要增加backlog的值。
+sysctl -w net.core.netdev_max_backlog=2000 (默认值是:1000)
+RPS开启后消耗的时间会体现在top的si字段之后。
+虚拟机目前都是单队列网卡没有开启RSS。</code></pre>
+<p>经过这些调整后，虚拟机业务带宽可以跑满网卡带宽。</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><h3 id="其他优化项"><a href="#其他优化项" class="headerlink" title="其他优化项"></a>其他优化项</h3><ol>
+<li><pre><code>关闭打印时间戳： sysctl -w net.core.netdev_tstamp_prequeue=0</code></pre></li>
+<li><p>开启RPS或RFS，见参考文档。</p>
 </li>
-<li><p>激活：　<code>ceph-disk activate {data-path} [--activate-key {path}]</code></p>
+<li><p>虚拟机采用vxlan网络，经过封装后报文长度增加50个字节，因此需要将虚拟机网卡mtu降低为1450。</p>
 </li>
 </ol>
-<p>注： 如果你的 Ceph 节点上没有 <code>/var/lib/ceph/bootstrap-osd/{cluster}.keyring</code> ，那么应该外加 <code>--activate-key</code>参数。</p>
-<p>osd的自动启动是udev的规则控制，所以需要给osd用sgdisk打上标签</p>
-<p>规则</p>
-<p>/usr/lib/udev/rules.d/95-ceph-osd.rules</p>
-<p>/usr/lib/udev/rules.d/60-ceph-by-parttypeuuid.rules</p>
-</blockquote>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p><a href="https://arthurchiao.github.io/blog/tuning-stack-rx-zh/#chap_10.3" target="_blank" rel="noopener">https://arthurchiao.github.io/blog/tuning-stack-rx-zh/#chap_10.3</a></p>
+<p><a href="https://arthurchiao.github.io/blog/tuning-stack-tx-zh/" target="_blank" rel="noopener">https://arthurchiao.github.io/blog/tuning-stack-tx-zh/</a></p>
+<p><a href="https://jermine.vdo.pub/linux/linux服务器丢包故障的解决/" target="_blank" rel="noopener">https://jermine.vdo.pub/linux/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%A2%E5%8C%85%E6%95%85%E9%9A%9C%E7%9A%84%E8%A7%A3%E5%86%B3/</a></p>
+<p><a href="https://ylgrgyq.github.io/2017/07/23/linux-receive-packet-1/" target="_blank" rel="noopener">https://ylgrgyq.github.io/2017/07/23/linux-receive-packet-1/</a></p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。 </span>
